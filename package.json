@@ -1,0 +1,23 @@
+{
+  "name": "suppis-core",
+  "version": "0.0.0",
+  "description": "backend for Suppis",
+  "main": "bin/index.js",
+  "type": "module",
+  "bin": {
+    "suppis": "./bin/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node bin/index.js",
+    "dev": "nodemon bin/index.js"
+  },
+  "author": "Nummenpojat",
+  "license": "ISC",
+  "dependencies": {
+    "firebase": "^9.13.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
