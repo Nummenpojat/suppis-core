@@ -9,12 +9,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/index.ts",
-    "build": "npx typescript",
     "dev": "nodemon src/index.ts"
   },
   "author": "Nummenpojat",
   "license": "ISC",
   "dependencies": {
+    "commander": "^9.4.1",
     "firebase": "^9.13.0"
   },
   "devDependencies": {
