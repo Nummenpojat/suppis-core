@@ -2,15 +2,15 @@
   "name": "suppis-core",
   "version": "0.0.0",
   "description": "backend for Suppis",
-  "main": "bin/index.js",
-  "type": "module",
+  "main": "src/index.ts",
   "bin": {
-    "suppis": "./bin/index.js"
+    "suppis": "/bin/index.ts"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node bin/index.js",
-    "dev": "nodemon bin/index.js"
+    "start": "node src/index.ts",
+    "build": "npx typescript",
+    "dev": "nodemon src/index.ts"
   },
   "author": "Nummenpojat",
   "license": "ISC",
@@ -18,6 +18,8 @@
     "firebase": "^9.13.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20"
+    "@types/node": "^18.11.8",
+    "nodemon": "^2.0.20",
+    "typescript": "^4.8.4"
   }
 }
