@@ -2,23 +2,26 @@
   "name": "suppis-core",
   "version": "0.0.0",
   "description": "backend for Suppis",
-  "main": "src/index.ts",
+  "main": "src/main.ts",
   "bin": {
     "suppis": "/bin/index.ts"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/index.ts",
-    "dev": "nodemon src/index.ts"
+    "start": "node src/main.ts",
+    "dev": "nodemon src/main.ts"
   },
   "author": "Nummenpojat",
   "license": "ISC",
   "dependencies": {
     "commander": "^9.4.1",
-    "firebase": "^9.13.0"
+    "firebase": "^9.13.0",
+    "qrcode-terminal": "^0.12.0",
+    "whatsapp-web.js": "^1.18.2"
   },
   "devDependencies": {
     "@types/node": "^18.11.8",
+    "@types/node-fetch": "^2.6.2",
     "nodemon": "^2.0.20",
     "typescript": "^4.8.4"
   }
