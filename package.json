@@ -2,14 +2,15 @@
   "name": "suppis-core",
   "version": "0.0.0",
   "description": "backend for Suppis",
-  "main": "src/main.ts",
+  "main": "src/main.js",
   "bin": {
-    "suppis": "/bin/index.ts"
+    "suppis": "/bin/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/main.ts",
-    "dev": "nodemon src/main.ts"
+    "start": "ts-node src/main.ts",
+    "dev": "nodemon --exec ts-node src/main.ts",
+    "build": "tsc"
   },
   "author": "Nummenpojat",
   "license": "ISC",

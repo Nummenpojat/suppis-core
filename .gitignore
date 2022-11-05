@@ -1,3 +1,5 @@
 /node_modules
 config/firebase.ts
 config/whatsapp/**
+*.js
+*.js.map

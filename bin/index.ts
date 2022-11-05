@@ -1,6 +1,7 @@
 #! /usr/bin/env node
+
 import {Command} from 'commander';
-import {deleteWhatsapp, listenWhatsapp, newWhatsappSession} from "../src/modules/whatsapp/main";
+const {listenWhatsapp, newWhatsappSession, sendMessage} = require("../src/modules/whatsapp/main");
 
 const program = new Command();
 
@@ -10,21 +11,27 @@ program
   .version('0.0.0');
 
 program.command('new')
-  .description('make new messenger session. Options at this point are: Whatsapp')
-  .arguments('<provider>')
+  .description('make new Whatsapp session')
   .action(() => {
     newWhatsappSession()
   });
 
 program.command('listen')
-  .description('Listen for messages. Options at this point are: Whatsapp')
-  .arguments('<provider>')
-  .action((provider) => {
-    if (provider == "whatsapp") {
-      console.log(`Using provider ${provider}`)
+  .description('listen for Whatsapp messages')
+  .action(() => {
       listenWhatsapp()
-    } else {
-      console.error(`Provider ${provider} was invalid`)
+  });
+
+program.command('send')
+  .description('send message with Whatsapp')
+  .arguments('<message> <type> <where_to_send>')
+  .action((message: string, type: string, where_to_send: string) => {
+    if (type === 'to') {
+      if (where_to_send.startsWith('+')) {
+        sendMessage(where_to_send.substring(1), message)
+      } else {
+        sendMessage(where_to_send, message)
+      }
     }
   });
 
