@@ -1,16 +1,19 @@
 import {Client, LocalAuth, Message} from "whatsapp-web.js";
 const qrcode = require('qrcode-terminal');
 
-const client = new Client({
-  authStrategy: new LocalAuth({ dataPath: "./config/whatsapp/session"})
+// Client configuration and exporting to other module parts
+export const client = new Client({
+  authStrategy: new LocalAuth({ dataPath: "../../config/whatsapp"})
 });
 
+// Making new Whatsapp Web session to use when user wants to do something with Whatsapp module
 export const newWhatsappSession = () => {
 
   client.on('ready', () => {
-    console.log('Client is ready!');
+    console.log('Now you can run commands to interact with Whatsapp module');
   });
 
+  // Generating qr code if session does not already exist
   client.on('qr', (qr: string) => {
     console.clear();
     qrcode.generate(qr, {small: true});
@@ -23,7 +26,7 @@ export const newWhatsappSession = () => {
 export const listenWhatsapp = () => {
 
   client.on('ready', () => {
-    console.log('Client is ready!');
+    console.log('Ready to receive messages!');
   });
 
   client.on('message', (message: Message) => {
@@ -31,21 +34,7 @@ export const listenWhatsapp = () => {
     console.log(message.body);
   });
 
-}
-
-export const sendMessage = (number: string, message: string) => {
-  client.on('ready', () => {
-    console.log('Client is ready!');
-  });
-
-  const chatId = number + "@c.us"
-
-  client.sendMessage(chatId, message)
-    .then((message: Message) => {
-      console.log(`Message ${message.body} sent`)
-    }).catch((error: Error) => {
-      console.error(error)
-  })
+  client.initialize();
 }
 
 

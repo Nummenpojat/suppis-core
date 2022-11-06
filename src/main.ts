@@ -1,5 +1,4 @@
-
-console.log("kissa")
+console.log("Hello! I'm Suppis")
 
 
 

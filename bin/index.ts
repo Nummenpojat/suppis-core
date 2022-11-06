@@ -1,7 +1,8 @@
 #! /usr/bin/env node
 
 import {Command} from 'commander';
-const {listenWhatsapp, newWhatsappSession, sendMessage} = require("../src/modules/whatsapp/main");
+import {listenWhatsapp, newWhatsappSession} from "../src/modules/whatsapp/main";
+import {sendMessage} from "../src/modules/whatsapp/sendMessage";
 
 const program = new Command();
 
@@ -19,20 +20,14 @@ program.command('new')
 program.command('listen')
   .description('listen for Whatsapp messages')
   .action(() => {
-      listenWhatsapp()
+    listenWhatsapp()
   });
 
 program.command('send')
   .description('send message with Whatsapp')
-  .arguments('<message> <type> <where_to_send>')
-  .action((message: string, type: string, where_to_send: string) => {
-    if (type === 'to') {
-      if (where_to_send.startsWith('+')) {
-        sendMessage(where_to_send.substring(1), message)
-      } else {
-        sendMessage(where_to_send, message)
-      }
-    }
+  .arguments('<message> <phone_number>')
+  .action((message: string, phone_number: string) => {
+    sendMessage(phone_number, message)
   });
 
 program.parse();
