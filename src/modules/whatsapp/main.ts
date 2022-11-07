@@ -1,9 +1,11 @@
 import {Client, LocalAuth, Message} from "whatsapp-web.js";
+
 const qrcode = require('qrcode-terminal');
 
 // Client configuration and exporting to other module parts
 export const client = new Client({
-  authStrategy: new LocalAuth({ dataPath: "../../config/whatsapp"})
+  authStrategy: new LocalAuth({dataPath: "../../config/whatsapp"}),
+  takeoverOnConflict: true
 });
 
 // Making new Whatsapp Web session to use when user wants to do something with Whatsapp module
@@ -24,6 +26,7 @@ export const newWhatsappSession = () => {
 }
 
 export const listenWhatsapp = () => {
+  console.log("Connecting to Whatsapp...")
 
   client.on('ready', () => {
     console.log('Ready to receive messages!');
@@ -34,7 +37,10 @@ export const listenWhatsapp = () => {
     console.log(message.body);
   });
 
-  client.initialize();
+  client.initialize()
+    .then(() => {
+      console.log("initialized")
+    });
 }
 
 

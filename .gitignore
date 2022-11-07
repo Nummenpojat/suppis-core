@@ -1,5 +1,6 @@
 # Local configs
 config/whatsapp/**
+.idea
 
 # Logs
 logs

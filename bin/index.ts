@@ -2,7 +2,7 @@
 
 import {Command} from 'commander';
 import {listenWhatsapp, newWhatsappSession} from "../src/modules/whatsapp/main";
-import {sendMessage} from "../src/modules/whatsapp/sendMessage";
+import {sendBulkMessage, sendMessage} from "../src/modules/whatsapp/sendMessage";
 
 const program = new Command();
 
@@ -25,9 +25,14 @@ program.command('listen')
 
 program.command('send')
   .description('send message with Whatsapp')
-  .arguments('<message> <phone_number>')
-  .action((message: string, phone_number: string) => {
-    sendMessage(phone_number, message)
+  .arguments('<message> <type> [phone_number]')
+  .action((message: string, type: string, phone_number: string,) => {
+    // Testing the type how to send a message
+    if (type == "list") {
+      sendBulkMessage(message)
+    } else {
+      sendMessage(phone_number, message)
+    }
   });
 
 program.parse();
