@@ -1,5 +1,6 @@
 import {Message} from "whatsapp-web.js";
 import {client} from "./main";
+import {Person} from "../../../types/person";
 
 export const sendMessage = (phoneNumber: string, message: string) => {
 
@@ -31,11 +32,11 @@ export const sendMessage = (phoneNumber: string, message: string) => {
   client.initialize();
 }
 
-const DUMMY_NUMBERS = [
+const DUMMY_NUMBERS: Person[] = [
   {
     name: "example",
     number: 1234,
-    agegroup: "sudenpentu",
+    ageGroup: "sudenpentu",
     group: "ViMa tiimi"
   }
 ]
