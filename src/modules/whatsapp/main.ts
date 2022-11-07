@@ -12,7 +12,8 @@ export const client = new Client({
 export const newWhatsappSession = () => {
 
   client.on('ready', () => {
-    console.log('Now you can run commands to interact with Whatsapp module');
+    console.log('Client is ready, but wait until the session is synchronized!');
+    console.log('Then you can exit')
   });
 
   // Generating qr code if session does not already exist
