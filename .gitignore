@@ -1,6 +1,7 @@
 # Local configs
-config/whatsapp/**
+config/whatsapp/*
 .idea
+config/firebase-admin-secrets/*
 
 # Logs
 logs

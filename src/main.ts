@@ -1,5 +1,1 @@
-console.log("Hello! I'm Suppis")
-
-
-
-
+console.log("Hi!\nI am suppis.")

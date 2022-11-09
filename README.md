@@ -14,5 +14,13 @@ Use Suppis through command line
 3. Run `npm i -g` to install Suppis as global script
 4. Now you can run `suppis` command anywhere
 
+#### If you want to send same message to list of people
+1. Make Firebase project
+2. Go to project settings => Service accounts => Firebase Admin sdk => and download your private key
+3. Copy the .json file to your project
+4. Configure config/firebase-admin.ts to use your .json
+5. Add some numbers by firebase console to persons / [person id] / number: [phone number] **Also remember that name is also required**
+6. Now you can use `suppis send [your message] list` to send message to everybody at persons collection
+
 ### Things to know before using
 - When creating new Whatsapp session wait until the session finishes synchronizing so your session gets saved

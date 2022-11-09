@@ -1,6 +1,7 @@
 import {Message} from "whatsapp-web.js";
 import {client} from "./main";
 import {Person} from "../../../types/person";
+import {db} from "../../../config/firebase-admin";
 
 export const sendMessage = (phoneNumber: string, message: string) => {
 
@@ -29,30 +30,31 @@ export const sendMessage = (phoneNumber: string, message: string) => {
       })
   });
 
+  client.on('auth_failure', (message: string) => {
+    console.log(message)
+  })
+
   client.initialize();
 }
 
-const DUMMY_NUMBERS: Person[] = [
-  {
-    name: "example",
-    number: 1234,
-    ageGroup: "sudenpentu",
-    group: "ViMa tiimi"
-  }
-]
-
-export const sendBulkMessage = (message: string) => {
+export const sendBulkMessage = async (message: string) => {
 
   console.log('Sending messages...');
+
+  // Getting number list from db to know which persons to send the message
+  const personsSnap = await db.collection("persons").get()
+  const persons = personsSnap.docs.map((doc: any) => {
+    return {
+      ...doc.data()
+    }
+  })
 
   client.on('ready', () => {
 
     console.log("Client ready!")
 
     // Sending message to each on the list
-    DUMMY_NUMBERS.forEach((person: any) => {
-
-      console.log(`trying to send message to ${person.name}`)
+    persons.forEach((person: any) => {
 
       //Making chat id from phone number to use at client.sendMessage to identify where to send the message
       let chatId = person.number + "@c.us"
@@ -71,12 +73,11 @@ export const sendBulkMessage = (message: string) => {
           throw error
         })
     })
-    console.log("Now you can exit program")
   });
 
-  client.initialize()
-    .then(() => {
-      console.log("initialized")
-    });
+  client.on('auth_failure', (message: string) => {
+    console.log(message)
+  })
 
+  client.initialize();
 }
