@@ -1,9 +1,9 @@
-import * as express from "express"
 import {sendBulkMessage, sendMessage} from "../../modules/whatsapp/sendMessage";
+import {Router, json} from "express";
 
-export const router = express.Router()
+const router = Router()
 
-router.use(express.json())
+router.use(json)
 
 router.get('/', (req: any, res: any) => {
   res.send('This is Whatsapp!')
@@ -32,3 +32,5 @@ router.post('/send/list', (req, res) => {
       console.error(reason)
     })
 })
+
+export const whatsappRouter = router;

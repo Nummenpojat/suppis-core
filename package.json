@@ -8,8 +8,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node src/main.ts",
-    "dev": "nodemon --exec ts-node src/main.ts",
+    "start": "ts-node src/api/main.ts",
+    "dev": "nodemon --exec ts-node src/api/main.ts",
     "build": "tsc"
   },
   "author": "Nummenpojat",

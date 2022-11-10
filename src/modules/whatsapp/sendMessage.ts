@@ -1,7 +1,7 @@
 import {Message} from "whatsapp-web.js";
 import {client} from "./main";
 import {Person} from "../../types/person";
-import {db} from "../../firebase-admin";
+import {db} from "../../main";
 
 export const sendMessage = async (phoneNumber: string, message: string) => {
 
