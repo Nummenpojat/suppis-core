@@ -6,7 +6,8 @@ app.get('/', (req: any, res: any) => {
   res.send('This is Suppis!')
 })
 
-const whatsapp = require('./routes/modules/whatsapp')
+import {router as whatsapp} from "./routes/modules/whatsapp";
 app.use('/modules/whatsapp', whatsapp)
 
 app.listen(PORT);
+console.log(`App listening on port: ${PORT}`)
