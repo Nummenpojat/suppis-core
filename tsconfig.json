@@ -3,7 +3,7 @@
     "module": "commonjs",
     "target": "ES2015",
     "sourceMap": true,
-    "strict": true,
+    "strict": true
   },
   "exclude": [
     "node_modules"
