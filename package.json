@@ -4,7 +4,7 @@
   "description": "backend for Suppis",
   "main": "src/main.js",
   "bin": {
-    "suppis": "bin/index.js"
+    "suppis": "/src/bin/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

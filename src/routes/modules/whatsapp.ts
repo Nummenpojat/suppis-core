@@ -16,6 +16,9 @@ router.post('/send/one', (req, res) => {
 
   // Sending message to number that was given
   sendMessage(req.body.number, req.body.message)
+    .catch((reason) => {
+      console.error(reason)
+    })
 })
 
 router.post('/send/list', (req, res) => {
@@ -24,5 +27,8 @@ router.post('/send/list', (req, res) => {
   res.status(202).send('Message received. Sending messages!')
 
   // Sending messages to list of people
-  sendBulkMessage(req.body.message);
+  sendBulkMessage(req.body.message)
+    .catch((reason) => {
+      console.error(reason)
+    })
 })

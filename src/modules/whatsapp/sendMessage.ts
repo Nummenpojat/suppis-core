@@ -1,11 +1,21 @@
 import {Message} from "whatsapp-web.js";
 import {client} from "./main";
 import {Person} from "../../../types/person";
-import {db} from "../../../config/firebase-admin";
+import {db} from "../../firebase-admin";
 
-export const sendMessage = (phoneNumber: string, message: string) => {
+export const sendMessage = async (phoneNumber: string, message: string) => {
 
   console.log('Sending message...');
+
+  // Checking that phone number is not empty
+  if (phoneNumber == "" || phoneNumber == null || phoneNumber == undefined) {
+    throw "You need to provide phone number"
+  }
+
+  // Checking that message is not empty
+  if (message == "" || message == null || message == undefined) {
+    throw "You need to provide message to send"
+  }
 
   client.on('ready', () => {
 
@@ -22,7 +32,6 @@ export const sendMessage = (phoneNumber: string, message: string) => {
       .then((message: Message) => {
 
         console.log(`Message ${message.body} sent`);
-        console.log("Now you can exit program")
 
       })
       .catch((error: Error) => {
@@ -40,6 +49,11 @@ export const sendMessage = (phoneNumber: string, message: string) => {
 export const sendBulkMessage = async (message: string) => {
 
   console.log('Sending messages...');
+
+  // Checking that message is not empty
+  if (message == "" || message == null || message == undefined) {
+    throw "You need to provide message to send"
+  }
 
   // Getting number list from db to know which persons to send the message
   const personsSnap = await db.collection("persons").get()
@@ -73,11 +87,12 @@ export const sendBulkMessage = async (message: string) => {
           throw error
         })
     })
-  });
 
-  client.on('auth_failure', (message: string) => {
-    console.log(message)
-  })
+    client.on('auth_failure', (message: string) => {
+      console.log(message)
+    })
+
+  });
 
   client.initialize();
 }

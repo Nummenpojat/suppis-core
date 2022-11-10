@@ -3,7 +3,7 @@ import {getApps, initializeApp} from "firebase-admin/app";
 import {credential} from "firebase-admin";
 
 // Replace file path with your own firebase admin sdk secret key file
-const ServiceAccount = require('./firebase-admin-secrets/suppis-firebase-admin-secrets.json');
+const ServiceAccount = require('../config/firebase-admin-secrets/suppis-firebase-admin-secrets.json');
 const app = initializeApp({
   credential: credential.cert(ServiceAccount)
 });

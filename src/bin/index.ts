@@ -1,8 +1,8 @@
 #! /usr/bin/env node
 
 import {Command} from 'commander';
-import {listenWhatsapp, newWhatsappSession} from "../src/modules/whatsapp/main";
-import {sendBulkMessage, sendMessage} from "../src/modules/whatsapp/sendMessage";
+import {listenWhatsapp, newWhatsappSession} from "../modules/whatsapp/main";
+import {sendBulkMessage, sendMessage} from "../modules/whatsapp/sendMessage";
 
 const program = new Command();
 
