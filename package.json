@@ -2,9 +2,9 @@
   "name": "suppis-core",
   "version": "0.1.0",
   "description": "backend for Suppis",
-  "main": "src/main.js",
+  "main": "dist/main.js",
   "bin": {
-    "suppis": "/src/bin/index.js"
+    "suppis": "/dist/bin/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
