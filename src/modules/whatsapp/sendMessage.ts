@@ -3,6 +3,11 @@ import {client} from "./main";
 import {Person} from "../../types/person";
 import {db} from "../../main";
 
+/**
+ *  Send message with Whatsapp to single number
+ *  @param phoneNumber Number that message is sent
+ *  @param message Text that is sent to phoneNumber provided
+ **/
 export const sendMessage = async (phoneNumber: string, message: string) => {
 
   console.log('Sending message...');
@@ -46,6 +51,10 @@ export const sendMessage = async (phoneNumber: string, message: string) => {
   client.initialize();
 }
 
+/**
+ * Send same message to list of people
+ * @param message Text that is sent to list provided
+ * */
 export const sendBulkMessage = async (message: string) => {
 
   console.log('Sending messages...');

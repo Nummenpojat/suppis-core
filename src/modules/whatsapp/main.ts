@@ -9,6 +9,10 @@ export const client = new Client({
 });
 
 // Making new Whatsapp Web session to use when user wants to do something with Whatsapp module
+/**
+ * Generates new Whatsapp session
+ * @return QR-code to terminal
+ * */
 export const newWhatsappSession = () => {
 
   console.log("Generating qr code")
@@ -28,6 +32,9 @@ export const newWhatsappSession = () => {
 
 }
 
+/**
+ * Listens for messages in Whatsapp and prints them to the terminal
+ * */
 export const listenWhatsapp = () => {
   console.log("Connecting to Whatsapp...")
 
