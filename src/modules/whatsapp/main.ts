@@ -33,7 +33,8 @@ export const newWhatsappSession = () => {
 }
 
 /**
- * Listens for messages in Whatsapp and prints them to the terminal
+ * Listens for messages in Whatsapp <br/>
+ * Prints messages to the terminal
  * */
 export const listenWhatsapp = () => {
   console.log("Connecting to Whatsapp...")

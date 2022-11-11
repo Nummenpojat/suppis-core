@@ -33,4 +33,7 @@ router.post('/send/list', (req, res) => {
     })
 })
 
+/**
+ * Router constant to be entry point to Whatsapp api
+ */
 export const whatsappRouter = router;
