@@ -3,7 +3,7 @@ import {Router, json} from "express";
 
 const router = Router()
 
-router.use(json)
+router.use(json())
 
 router.get('/', (req: any, res: any) => {
   res.send('This is Whatsapp!')

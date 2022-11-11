@@ -4,12 +4,14 @@ const qrcode = require('qrcode-terminal');
 
 // Client configuration and exporting to other module parts
 export const client = new Client({
-  authStrategy: new LocalAuth({dataPath: "../../config/whatsapp"}),
+  authStrategy: new LocalAuth({dataPath: "./config/whatsapp"}),
   takeoverOnConflict: true
 });
 
 // Making new Whatsapp Web session to use when user wants to do something with Whatsapp module
 export const newWhatsappSession = () => {
+
+  console.log("Generating qr code")
 
   client.on('ready', () => {
     console.log('Client is ready, but wait until the session is synchronized!');
