@@ -11,28 +11,26 @@ export const client = new Client({
 // Making new Whatsapp Web session to use when user wants to do something with Whatsapp module
 /**
  * Generates new Whatsapp session
- * @return string
+ * @param maxAllowedLoadTime Is milliseconds that function allows Whatsapp to load new session. Default 30000 milliseconds
+ * @return Promise<string> that is used to generate new Whatsapp session
  * */
-
-export const newWhatsappSession = async (): Promise<string> => {
+export const newWhatsappSession = async (maxAllowedLoadTime?: number): Promise<string> => {
   return await new Promise((resolve, reject) => {
-      console.log("Generating QR code...")
+    console.log("Generating QR code...")
 
-      client.initialize()
+    client.initialize()
 
-      client.on("ready", () => {
-        reject("Whatsapp session already existed")
-      })
+    client.on("ready", () => {
+      reject("Whatsapp session already existed")
+    })
 
-      client.on('qr', (qr) => {
-        resolve(qr)
-      })
+    client.on('qr', (qr) => {
+      resolve(qr)
+    })
 
-      //new Promise((resolve, reject) => {
-        setTimeout(() => {
-          reject("Qr wasn't emitted in 30 seconds")
-        }, 30000);
-      //})
+    setTimeout(() => {
+      reject("Qr wasn't emitted in 30 seconds")
+    }, maxAllowedLoadTime || 30000);
   })
 }
 

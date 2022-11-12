@@ -33,9 +33,6 @@ router.post('/send/list', (req, res) => {
     })
 })
 
-/**
- * Router constant to be entry point to Whatsapp api
- */
 router.get('/new', async (req, res) => {
   newWhatsappSession()
     .then((value) => {
@@ -44,4 +41,8 @@ router.get('/new', async (req, res) => {
     res.status(500).send(reason)
   })
 })
+
+/**
+ * Router constant to be entry point to Whatsapp api
+ */
 export const whatsappRouter = router;
