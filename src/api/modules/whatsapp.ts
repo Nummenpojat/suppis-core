@@ -39,7 +39,7 @@ router.get('/new', async (req, res) => {
     .then((value) => {
       res.status(200).send(value)
     }).catch((reason) => {
-    res.status(500).send(reason)
+    res.status(500).send(`${reason.name}: ${reason.message}, Data: ${reason.data}`)
   })
 })
 
