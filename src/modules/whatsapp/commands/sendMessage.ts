@@ -20,7 +20,7 @@ export const sendMessage = async (phoneNumber: string, message: string) => {
     throw "You need to provide message to send"
   }
 
-  client.on('ready', () => {
+  client.on('ready', async () => {
 
     // Removing + at the start if it exits so the phone number is in right format
     if (phoneNumber.startsWith('+')) {
@@ -30,16 +30,20 @@ export const sendMessage = async (phoneNumber: string, message: string) => {
     //Making chat id from phone number to use at client.sendMessage to identify where to send the message
     const chatId = phoneNumber + "@c.us"
 
-    // Sending message to chosen chat
-    client.sendMessage(chatId, message)
-      .then((message: Message) => {
+    if (await client.isRegisteredUser(chatId)) {
+      throw "Number is not valid"
+    }
 
-        console.log(`Message ${message.body} sent`);
+      // Sending message to chosen chat
+      client.sendMessage(chatId, message)
+        .then((message: Message) => {
 
-      })
-      .catch((error: Error) => {
-        throw error
-      })
+          console.log(`Message ${message.body} sent`);
+
+        })
+        .catch((error: Error) => {
+          throw error
+        })
   });
 
   client.on('auth_failure', (message: string) => {
