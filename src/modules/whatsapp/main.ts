@@ -15,11 +15,8 @@ export const client = new Client({
  * */
 export const newWhatsappSession = () => {
 
-<<<<<<< HEAD
-  console.log("Generating qr code")
+  console.log("Generating QR code...")
 
-=======
->>>>>>> parent of c2b731a (api endpoint to get qrcode to login into Whatsapp)
   client.on('ready', () => {
     console.log('Client is ready, but wait until the session is synchronized!');
     console.log('Then you can exit')
