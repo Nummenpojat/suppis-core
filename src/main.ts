@@ -3,6 +3,7 @@ import {initializeApp} from "firebase-admin/app";
 import {credential} from "firebase-admin";
 import * as express from "express"
 import {whatsappRouter} from "./api/modules/whatsapp";
+import {eventsRouter} from "./api/modules/events";
 
 /**
  * Constant that holds Firebase admin sdk service account <br/>
@@ -23,6 +24,7 @@ const api = express()
 const PORT = 3001
 
 api.use('/modules/whatsapp', whatsappRouter)
+api.use('/modules/events', eventsRouter)
 
 api.get('/', (req: any, res: any) => {
   res.send("This is Suppis!")

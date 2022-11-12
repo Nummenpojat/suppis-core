@@ -1,12 +1,12 @@
-export interface Event {
+export interface ScoutingEvent {
   name: string
   date: {
-    starts: Date,
-    ends?: Date
+    starts: any,
+    ends?: any
   }
   registration?: {
     isOpen: boolean,
-    stopsAt: Date
+    stopsAt?: Date
   }
   linkToEventCalendar?: string
   description?: string
