@@ -1,8 +1,9 @@
 #! /usr/bin/env node
-
 import {Command} from 'commander';
 import {listenWhatsapp, newWhatsappSession} from "../modules/whatsapp/main";
 import {sendBulkMessage, sendMessage} from "../modules/whatsapp/sendMessage";
+
+const qrcode = require("qrcode-terminal")
 
 const program = new Command();
 
@@ -15,6 +16,12 @@ program.command('new')
   .description('make new Whatsapp session')
   .action(() => {
     newWhatsappSession()
+      .then((qr) => {
+        qrcode.generate(qr, {small: true})
+      })
+      .catch((reason) => {
+        console.log(`Error "${reason}" was emitted`)
+      })
   });
 
 program.command('listen')

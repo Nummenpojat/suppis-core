@@ -11,25 +11,29 @@ export const client = new Client({
 // Making new Whatsapp Web session to use when user wants to do something with Whatsapp module
 /**
  * Generates new Whatsapp session
- * @return QR-code to terminal
+ * @return string
  * */
-export const newWhatsappSession = () => {
 
-  console.log("Generating QR code...")
+export const newWhatsappSession = async (): Promise<string> => {
+  return await new Promise((resolve, reject) => {
+      console.log("Generating QR code...")
 
-  client.on('ready', () => {
-    console.log('Client is ready, but wait until the session is synchronized!');
-    console.log('Then you can exit')
-  });
+      client.initialize()
 
-  // Generating qr code if session does not already exist
-  client.on('qr', (qr: string) => {
-    console.clear();
-    qrcode.generate(qr, {small: true});
-  });
+      client.on("ready", () => {
+        reject("Whatsapp session already existed")
+      })
 
-  client.initialize();
+      client.on('qr', (qr) => {
+        resolve(qr)
+      })
 
+      //new Promise((resolve, reject) => {
+        setTimeout(() => {
+          reject("Qr wasn't emitted in 30 seconds")
+        }, 30000);
+      //})
+  })
 }
 
 /**

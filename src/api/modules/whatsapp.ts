@@ -1,6 +1,6 @@
 import {sendBulkMessage, sendMessage} from "../../modules/whatsapp/sendMessage";
 import {Router, json} from "express";
-import {client} from "../../modules/whatsapp/main";
+import {newWhatsappSession} from "../../modules/whatsapp/main";
 
 const router = Router()
 router.use(json())
@@ -37,21 +37,11 @@ router.post('/send/list', (req, res) => {
  * Router constant to be entry point to Whatsapp api
  */
 router.get('/new', async (req, res) => {
-
-  // TODO refactor to /modules/whatsapp/main.ts
-  // Generating and sending qr code to scan to log in to Whatsapp
-  try {
-    let qr = await new Promise((resolve, reject) => {
-      client.initialize()
-      client.on('qr', (qr) => resolve(qr))
-      setTimeout(() => {
-        reject(new Error("QR event wasn't emitted in 15 seconds."))
-      }, 15000)
-    })
-    res.send(qr)
-  } catch (error) {
-    res.status(500).send(error)
-  }
-
+  newWhatsappSession()
+    .then((value) => {
+      res.status(200).send(value)
+    }).catch((reason) => {
+    res.status(500).send(reason)
+  })
 })
 export const whatsappRouter = router;
