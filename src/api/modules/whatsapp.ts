@@ -1,6 +1,7 @@
-import {sendBulkMessage, sendMessage} from "../../modules/whatsapp/sendMessage";
+import {sendMessage} from "../../modules/whatsapp/commands/sendMessage";
 import {Router, json} from "express";
 import {newWhatsappSession} from "../../modules/whatsapp/main";
+import {sendBulkMessage} from "../../modules/whatsapp/commands/sendBulkMessage";
 
 const router = Router()
 router.use(json())

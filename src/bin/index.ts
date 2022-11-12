@@ -1,7 +1,8 @@
 #! /usr/bin/env node
 import {Command} from 'commander';
 import {listenWhatsapp, newWhatsappSession} from "../modules/whatsapp/main";
-import {sendBulkMessage, sendMessage} from "../modules/whatsapp/sendMessage";
+import {sendMessage} from "../modules/whatsapp/commands/sendMessage";
+import {sendBulkMessage} from "../modules/whatsapp/commands/sendBulkMessage";
 
 const qrcode = require("qrcode-terminal")
 
