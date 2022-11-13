@@ -12,7 +12,7 @@ router.get('/', async (req: any, res: any) => {
 })
 
 router.post('/sendAd', (req: any, res: any) => {
-  sendAd()
+  sendAd("persons")
     .then(() => {
       res.status(200).send("Message was sent")
     })

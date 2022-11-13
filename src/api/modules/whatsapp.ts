@@ -28,7 +28,7 @@ router.post('/send/list', (req, res) => {
   res.status(202).send('Message received. Sending messages!')
 
   // Sending messages to list of people
-  sendBulkMessage(req.body.message)
+  sendBulkMessage(req.body.message, "persons")
     .catch((reason) => {
       console.error(reason)
     })

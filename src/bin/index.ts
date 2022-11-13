@@ -37,7 +37,7 @@ program.command('send')
   .action((message: string, type: string, phone_number: string,) => {
     // Testing the type how to send a message
     if (type == "list") {
-      sendBulkMessage(message)
+      sendBulkMessage(message, "persons")
     } else {
       sendMessage(phone_number, message)
     }

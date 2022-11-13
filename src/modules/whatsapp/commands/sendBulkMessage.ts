@@ -5,14 +5,19 @@ import {Message} from "whatsapp-web.js";
 /**
  * Send same message to list of people
  * @param message Text that is sent to list provided
+ * @param listId Id that identifies which list of persons to send the message
  * */
-export const sendBulkMessage = async (message: string) => {
+export const sendBulkMessage = async (message: string, listId: string) => {
 
   console.log('Sending messages...');
 
   // Checking that message is not empty
-  if (message == "" || message == null || message == undefined) {
+  if (message == "" || message == null) {
     throw "You need to provide message to send"
+  }
+
+  if (listId == "" || listId == null) {
+    throw "You need to provide listId to know which people to send the message"
   }
 
   // Getting number list from db to know which persons to send the message

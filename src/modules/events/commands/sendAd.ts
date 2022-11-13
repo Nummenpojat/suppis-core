@@ -5,7 +5,7 @@ import {ScoutingEvent} from "../../../types/event";
 /**
  * Sends basic ad for an event
  */
-export const sendAd = async () => {
+export const sendAd = async (listId: string) => {
   try {
 
     // Getting event data from firebase to get details to send as ad
@@ -17,7 +17,7 @@ export const sendAd = async () => {
   Hei! Oletko kuullut tapahtumasta nimeltä ${event.name}
   ${event.description}
   Tapahtuma ajankohta on: ${new Date(event.date.starts._seconds * 1000)} - ${new Date(event.date.ends._seconds * 1000)}
-  ${event.linkToEventCalendar}`)
+  ${event.linkToEventCalendar}`, listId)
 
   } catch (error) {
     throw error
