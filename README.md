@@ -26,7 +26,12 @@ Use Suppis through command line
 - When creating new Whatsapp session wait until the session finishes synchronizing so your session gets saved
 
 ## API
+### Backend APIs
 - send advertisement --- /module/whatsapp/send/ad
 - send message to list of people --- /module/whatsapp/send/list
 - send message to single person --- /module/whatsapp/send/one
 - make new whatsapp session --- /module/whatsapp/new
+
+### Firebase direct APIs
+- get / post / put / delete event
+- get events
