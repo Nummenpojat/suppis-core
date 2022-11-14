@@ -10,4 +10,5 @@ export interface ScoutingEvent {
   }
   linkToEventCalendar?: string
   description?: string
+  recommendationLevel?: 1 | 2 | 3 | 4 | 5
 }

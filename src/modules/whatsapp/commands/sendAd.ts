@@ -1,6 +1,5 @@
-import {db} from "../../../main";
-import {sendBulkMessage} from "../../whatsapp/commands/sendBulkMessage";
-import {ScoutingEvent} from "../../../types/event";
+import {sendBulkMessage} from "./sendBulkMessage";
+import {getEvent} from "../../events/main";
 
 /**
  * Sends basic ad for an event
@@ -9,9 +8,7 @@ export const sendAd = async (listId: string) => {
   try {
 
     // Getting event data from firebase to get details to send as ad
-    const eventSnap = await db.collection("events").doc("pkXvtuCJ6FijdL92Ftc8").get()
-    const event = eventSnap.data() as ScoutingEvent
-    console.log(event)
+    const event = await getEvent("pkXvtuCJ6FijdL92Ftc8")
 
     sendBulkMessage(`
   Hei! Oletko kuullut tapahtumasta nimeltä ${event.name}

@@ -1,13 +1,11 @@
 import {Router} from "express";
-import {db} from "../../main";
-import {ScoutingEvent} from "../../types/event";
-import {sendAd} from "../../modules/events/commands/sendAd";
+import {sendAd} from "../../modules/whatsapp/commands/sendAd";
+import {getEvent} from "../../modules/events/main";
 
 const router = Router()
 
 router.get('/', async (req: any, res: any) => {
-  const eventSnap = await db.collection("events").doc("pkXvtuCJ6FijdL92Ftc8").get()
-  const event: ScoutingEvent = eventSnap.data() as ScoutingEvent
+  const event  = await getEvent("pkXvtuCJ6FijdL92Ftc8")
   res.send(event)
 })
 
