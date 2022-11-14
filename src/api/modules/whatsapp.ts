@@ -2,6 +2,7 @@ import {sendMessage} from "../../modules/whatsapp/commands/sendMessage";
 import {Router, json} from "express";
 import {newWhatsappSession} from "../../modules/whatsapp/main";
 import {sendBulkMessage} from "../../modules/whatsapp/commands/sendBulkMessage";
+import {sendAd} from "../../modules/whatsapp/commands/sendAd";
 
 const router = Router()
 router.use(json())
@@ -41,6 +42,17 @@ router.get('/new', async (req, res) => {
     }).catch((reason) => {
     res.status(500).send(`${reason.name}: ${reason.message}, Data: ${reason.data}`)
   })
+})
+
+router.post('/send/ad', (req: any, res: any) => {
+  sendAd("persons")
+    .then(() => {
+      res.status(200).send("Message was sent")
+    })
+    .catch((reason) => {
+      console.log(reason)
+      res.status(500).send(`${reason.name}: ${reason.message}, Data: ${reason.data}`)
+    })
 })
 
 /**

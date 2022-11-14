@@ -24,3 +24,10 @@ Use Suppis through command line
 
 ### Things to know before using
 - When creating new Whatsapp session wait until the session finishes synchronizing so your session gets saved
+
+## API
+- send advertisement --- /module/whatsapp/send/ad
+- send message to list of people --- /module/whatsapp/send/list
+- send message to single person --- /module/whatsapp/send/one
+- make new whatsapp session --- /module/whatsapp/new
+- 
