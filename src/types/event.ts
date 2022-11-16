@@ -1,3 +1,7 @@
+/**
+ * Interface that defines event data structure
+ * Can hold any type of event
+ */
 export interface ScoutingEvent {
   name: string
   date: {
@@ -8,6 +12,7 @@ export interface ScoutingEvent {
     isOpen: boolean,
     stopsAt?: Date
   }
+  type: string
   linkToEventCalendar?: string
   description?: string
   recommendationLevel?: 1 | 2 | 3 | 4 | 5
