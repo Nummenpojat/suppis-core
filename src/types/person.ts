@@ -1,3 +1,7 @@
+/**
+ * Interface that defines Person data structure <br/>
+ * Intended for data structure of user profile
+ */
 export interface Person {
   // Person has id that is signed automatically by firestore in the document name
   name: string,

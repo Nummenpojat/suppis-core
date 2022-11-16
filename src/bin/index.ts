@@ -1,8 +1,10 @@
 #! /usr/bin/env node
-
 import {Command} from 'commander';
-import {listenWhatsapp, newWhatsappSession} from "../src/modules/whatsapp/main";
-import {sendBulkMessage, sendMessage} from "../src/modules/whatsapp/sendMessage";
+import {listenWhatsapp, newWhatsappSession} from "../modules/whatsapp/main";
+import {sendMessage} from "../modules/whatsapp/commands/sendMessage";
+import {sendBulkMessage} from "../modules/whatsapp/commands/sendBulkMessage";
+
+const qrcode = require("qrcode-terminal")
 
 const program = new Command();
 
@@ -15,6 +17,12 @@ program.command('new')
   .description('make new Whatsapp session')
   .action(() => {
     newWhatsappSession()
+      .then((qr) => {
+        qrcode.generate(qr, {small: true})
+      })
+      .catch((reason) => {
+        console.log(`Error "${reason}" was emitted`)
+      })
   });
 
 program.command('listen')
@@ -29,7 +37,7 @@ program.command('send')
   .action((message: string, type: string, phone_number: string,) => {
     // Testing the type how to send a message
     if (type == "list") {
-      sendBulkMessage(message)
+      sendBulkMessage(message, "persons")
     } else {
       sendMessage(phone_number, message)
     }

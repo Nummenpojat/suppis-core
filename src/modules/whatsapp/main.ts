@@ -4,28 +4,40 @@ const qrcode = require('qrcode-terminal');
 
 // Client configuration and exporting to other module parts
 export const client = new Client({
-  authStrategy: new LocalAuth({dataPath: "../../config/whatsapp"}),
+  authStrategy: new LocalAuth({dataPath: "./config/whatsapp"}),
   takeoverOnConflict: true
 });
 
 // Making new Whatsapp Web session to use when user wants to do something with Whatsapp module
-export const newWhatsappSession = () => {
+/**
+ * Generates new Whatsapp session
+ * @param maxAllowedLoadTime Is milliseconds that function allows Whatsapp to load new session. Default 30000 milliseconds
+ * @return Promise<string> that is used to generate new Whatsapp session
+ * */
+export const newWhatsappSession = async (maxAllowedLoadTime?: number): Promise<string> => {
+  return await new Promise((resolve, reject) => {
+    console.log("Generating QR code...")
 
-  client.on('ready', () => {
-    console.log('Client is ready, but wait until the session is synchronized!');
-    console.log('Then you can exit')
-  });
+    client.initialize()
 
-  // Generating qr code if session does not already exist
-  client.on('qr', (qr: string) => {
-    console.clear();
-    qrcode.generate(qr, {small: true});
-  });
+    client.on("ready", () => {
+      reject("Whatsapp session already existed")
+    })
 
-  client.initialize();
+    client.on('qr', (qr) => {
+      resolve(qr)
+    })
 
+    setTimeout(() => {
+      reject("Qr wasn't emitted in 30 seconds")
+    }, maxAllowedLoadTime || 30000);
+  })
 }
 
+/**
+ * Listens for messages in Whatsapp <br/>
+ * Prints messages to the terminal
+ * */
 export const listenWhatsapp = () => {
   console.log("Connecting to Whatsapp...")
 

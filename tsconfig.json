@@ -4,6 +4,8 @@
     "target": "ES2015",
     "sourceMap": true,
     "strict": true,
+    "outDir": "./dist",
+    "rootDir": "./src"
   },
   "exclude": [
     "node_modules"
