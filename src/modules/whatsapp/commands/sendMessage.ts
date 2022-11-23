@@ -30,10 +30,6 @@ export const sendMessage = async (phoneNumber: string, message: string) => {
     //Making chat id from phone number to use at client.sendMessage to identify where to send the message
     const chatId = phoneNumber + "@c.us"
 
-    if (await client.isRegisteredUser(chatId)) {
-      throw "Number is not valid"
-    }
-
       // Sending message to chosen chat
       client.sendMessage(chatId, message)
         .then((message: Message) => {
