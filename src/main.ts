@@ -4,6 +4,7 @@ import {credential} from "firebase-admin";
 import * as express from "express"
 import {whatsappRouter} from "./api/modules/whatsapp";
 import {eventsRouter} from "./api/modules/events";
+const cors = require("cors")
 
 /**
  * Constant that holds Firebase admin sdk service account <br/>
@@ -23,6 +24,7 @@ export const db = getFirestore(app);
 const api = express()
 const PORT = 3001
 
+api.use(cors())
 api.use('/modules/whatsapp', whatsappRouter)
 api.use('/modules/events', eventsRouter)
 
