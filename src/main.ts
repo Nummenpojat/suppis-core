@@ -2,10 +2,8 @@ import {getFirestore} from "firebase-admin/firestore";
 import {initializeApp} from "firebase-admin/app";
 import {credential} from "firebase-admin";
 import * as express from "express"
-import {NextFunction, Request, Response} from "express"
 import {whatsappRouter} from "./api/modules/whatsapp";
 import {eventsRouter} from "./api/modules/events";
-import {getAuth} from "firebase-admin/auth";
 import {checkAuth} from "./auth";
 const cors = require("cors")
 
