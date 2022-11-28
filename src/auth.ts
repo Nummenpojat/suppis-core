@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response} from "express";
-import {getAuth} from "firebase-admin/auth";
+import {DecodedIdToken, getAuth} from "firebase-admin/auth";
 
 /**
  * Verifies authentication that came with API request
@@ -8,29 +8,33 @@ import {getAuth} from "firebase-admin/auth";
  * @param next
  */
 export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
-  if (verifyIdToken(req.headers.idtoken)) {
-    console.log("ID token passed all tests")
-    next()
-  }
-  res.status(403).send("Unauthorized!")
+  verifyIdToken(req.headers.idtoken)
+    .then((result) => {
+      console.log("ID token passed all tests")
+      next()
+    })
+    .catch((reason) => {
+      res.status(403).send(`Unauthorized! ${reason}`)
+    })
 }
 
-const verifyIdToken = (idToken: string | string[] | undefined): boolean => {
+const verifyIdToken = async (idToken: string | string[] | undefined): Promise<boolean> => {
 
   // Verifies that ID token is a string and not something else
-  if (typeof idToken === "string") {
+  if (typeof idToken == "string") {
+
+    let result: DecodedIdToken
 
     // Verifies ID token to ensure correct access right to API
-    getAuth().verifyIdToken(idToken)
-      .then((result) => {
-        if (result.email_verified && result.email == "aaro.heroja@nummenpojat.fi") {
-          return true
-        }
-        return false
-      })
-      .catch(() => {
-        return false
-      })
+    try {
+      result = await getAuth().verifyIdToken(idToken)
+    } catch (error) {
+      throw "idToken was invalid"
+    }
+    if (result.email_verified && result.email == "aaro.heroja@nummenpojat.fi") {
+      return true
+    }
+    throw "Your email is not on list of permitted emails"
   }
-  return false
+  throw "idToken wasn't type string"
 }
