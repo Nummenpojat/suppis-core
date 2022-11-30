@@ -49,20 +49,35 @@ const verifyIdToken = async (idToken: string | string[] | undefined): Promise<vo
   throw "idToken wasn't type string"
 }
 
-export const setUserToAdmin = async (email: string) => {
+export const setUserToAdmin = async (req: Request) => {
 
-  // Gets user uid with email to have correct params for setting custom claims
-  await getAuth().getUserByEmail(email)
-    .then(async (user) => {
+  if (req.body.email != "" && req.body.email) {
 
-      // Set custom claims to user
-      await getAuth().setCustomUserClaims(user.uid, {
-        admin: true
-      }).catch((reason) => {
-        throw reason
+    // Gets user uid with email to have correct params for setting custom claims
+    await getAuth().getUserByEmail(req.body.email)
+      .then(async (user) => {
+
+        // Set custom claims to user
+        await getAuth().setCustomUserClaims(user.uid, {
+          admin: true
+        }).catch((reason) => {
+          throw {
+            status: 500,
+            reason: reason
+          }
+        })
       })
-    })
-    .catch((reason) => {
-      throw reason
-    })
+      .catch((reason) => {
+        throw {
+          status: 400,
+          reason: reason
+        }
+      })
+  } else {
+    throw {
+      status: 400,
+      reason: "Server didn't receive valid email"
+    }
+  }
+
 }

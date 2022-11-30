@@ -34,17 +34,9 @@ api.get('/', (req: any, res: any) => {
 })
 
 api.put('/admin', (req, res) => {
-  if (req.body.email != "" && req.body.email) {
-    setUserToAdmin(req.body.email)
-      .then(() => {
-        res.status(201).send(`${req.body.email} is now admin`)
-      })
-      .catch((reason) => {
-        res.status(500).send(reason)
-      })
-  } else {
-    res.status(400).send("Server didn't receive valid email")
-  }
+  setUserToAdmin(req)
+    .then(() => res.status(201).send(`${req.body.email} is now admin`))
+    .catch((reason) => res.status(reason.status).send(reason.reason))
 })
 
 api.listen(PORT);
