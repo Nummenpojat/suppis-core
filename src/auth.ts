@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response} from "express";
-import {DecodedIdToken, getAuth} from "firebase-admin/auth";
+import {DecodedIdToken, getAuth, UserRecord} from "firebase-admin/auth";
 
 /**
  * Verifies authentication that came with API request
@@ -10,7 +10,6 @@ import {DecodedIdToken, getAuth} from "firebase-admin/auth";
 export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
   verifyIdToken(req.headers.idtoken)
     .then((result) => {
-      console.log("ID token passed all tests")
       next()
     })
     .catch((reason) => {
@@ -18,7 +17,7 @@ export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
     })
 }
 
-const verifyIdToken = async (idToken: string | string[] | undefined): Promise<boolean> => {
+const verifyIdToken = async (idToken: string | string[] | undefined): Promise<void> => {
 
   // Verifies that ID token is a string and not something else
   if (typeof idToken == "string") {
@@ -31,10 +30,39 @@ const verifyIdToken = async (idToken: string | string[] | undefined): Promise<bo
     } catch (error) {
       throw "idToken was invalid"
     }
-    if (result.email_verified && result.email == "aaro.heroja@nummenpojat.fi") {
-      return true
+
+    // Gets user to check custom claims
+    let user: UserRecord
+
+    try {
+      user = await getAuth().getUser(result.uid)
+    } catch (error) {
+      throw error
+    }
+
+    // Verifies that user has correct access rights
+    if (result.email == "admin.suppis@nummenpojat.fi" || user.customClaims?.admin) {
+      return;
     }
     throw "Your email is not on list of permitted emails"
   }
   throw "idToken wasn't type string"
+}
+
+export const setUserToAdmin = async (email: string) => {
+
+  // Gets user uid with email to have correct params for setting custom claims
+  await getAuth().getUserByEmail(email)
+    .then(async (user) => {
+
+      // Set custom claims to user
+      await getAuth().setCustomUserClaims(user.uid, {
+        admin: true
+      }).catch((reason) => {
+        throw reason
+      })
+    })
+    .catch((reason) => {
+      throw reason
+    })
 }
