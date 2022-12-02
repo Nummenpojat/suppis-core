@@ -4,6 +4,8 @@ import {credential} from "firebase-admin";
 import * as express from "express"
 import {whatsappRouter} from "./api/modules/whatsapp";
 import {eventsRouter} from "./api/modules/events";
+import {checkAuth, setUserToAdmin} from "./auth";
+import {json} from "express";
 const cors = require("cors")
 
 /**
@@ -11,25 +13,30 @@ const cors = require("cors")
  * @todo Replace file path with your own firebase admin sdk secret key file
   */
 const ServiceAccount = require('../config/firebase-admin-secrets/suppis-firebase-admin-secrets.json');
-const app = initializeApp({
+const firebase = initializeApp({
   credential: credential.cert(ServiceAccount)
 });
 
-/**
- * Firestore database instance <br/>
- * It uses old namespaced environment so don't be confused
- */
-export const db = getFirestore(app);
+// Firestore database instance
+export const db = getFirestore(firebase);
 
 const api = express()
 const PORT = 3001
 
 api.use(cors())
+api.use(json())
+api.use("/", checkAuth)
 api.use('/modules/whatsapp', whatsappRouter)
 api.use('/modules/events', eventsRouter)
 
 api.get('/', (req: any, res: any) => {
   res.send("This is Suppis!")
+})
+
+api.put('/admin', (req, res) => {
+  setUserToAdmin(req)
+    .then(() => res.status(201).send(`${req.body.email} is now admin`))
+    .catch((reason) => res.status(reason.status).send(reason.reason))
 })
 
 api.listen(PORT);
