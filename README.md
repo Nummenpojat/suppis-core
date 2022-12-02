@@ -38,7 +38,4 @@ Use Suppis through command line
 - send message to list of people --- /module/whatsapp/send/list
 - send message to single person --- /module/whatsapp/send/one
 - make new whatsapp session --- /module/whatsapp/new
-
-### Firebase direct APIs
-- get / post / put / delete event
-- get events
+- make user admin --- /admin
