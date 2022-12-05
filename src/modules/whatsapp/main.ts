@@ -1,4 +1,7 @@
 import {Client, LocalAuth, Message} from "whatsapp-web.js";
+import {sendMessage} from "./commands/sendMessage";
+import {sendBulkMessage} from "./commands/sendBulkMessage";
+import {WebSocket} from "ws";
 
 const qrcode = require('qrcode-terminal');
 
@@ -54,6 +57,33 @@ export const listenWhatsapp = () => {
     .then(() => {
       console.log("initialized")
     });
+}
+
+export const whatsapp = (socket: WebSocket) => {
+  client.initialize()
+
+  client.on("qr", (qr) => {
+    socket.send(qr)
+  })
+
+  client.on("ready", () => {
+
+    socket.send("Client is ready")
+
+    socket.on('message', (rawMessage: any) => {
+      handleWhatsappSend(rawMessage);
+    })
+  })
+}
+
+export const handleWhatsappSend = (rawMessage: any) => {
+  const message: { type: string, number: string, message: string } = JSON.parse(rawMessage)
+  if (message.type == "one") {
+    sendMessage(message.number, message.message)
+  }
+  if (message.type == "list") {
+    sendBulkMessage(message.message, ["NUMBER HERE"])
+  }
 }
 
 

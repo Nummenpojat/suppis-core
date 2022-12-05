@@ -5,10 +5,8 @@ import * as express from "express"
 import {whatsappRouter} from "./api/modules/whatsapp";
 import {checkAuth, setUserToAdmin} from "./auth";
 import {json} from "express";
-import {WebSocketServer} from "ws";
-import {client} from "./modules/whatsapp/main";
-import {sendMessage} from "./modules/whatsapp/commands/sendMessage";
-import {sendBulkMessage} from "./modules/whatsapp/commands/sendBulkMessage";
+import {WebSocket, WebSocketServer} from "ws";
+import {client, handleWhatsappSend, whatsapp} from "./modules/whatsapp/main";
 const cors = require("cors")
 
 /**
@@ -31,28 +29,7 @@ const socketServer = new WebSocketServer({
 })
 
 socketServer.on('connection', (socket) => {
-  client.initialize()
-
-  client.on("qr", (qr) => {
-    socket.send(qr)
-  })
-
-  client.on("ready", () => {
-
-    socket.send("Client is ready")
-
-    socket.on('message', (rawMessage: any) => {
-      const message: { type: string, number: string, message: string } = JSON.parse(rawMessage)
-      console.log(message)
-      if (message.type == "one") {
-        sendMessage(message.number, message.message)
-      }
-      if (message.type == "list") {
-        sendBulkMessage(message.message, ["3584578385899"])
-      }
-    })
-  })
-
+  whatsapp(socket);
 })
 
 http.use(cors())
