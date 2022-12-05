@@ -15,12 +15,14 @@
   "author": "Nummenpojat",
   "license": "ISC",
   "dependencies": {
+    "@types/ws": "^8.5.3",
     "commander": "^9.4.1",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "firebase-admin": "^11.2.0",
     "qrcode-terminal": "^0.12.0",
-    "whatsapp-web.js": "^1.18.3"
+    "whatsapp-web.js": "^1.18.3",
+    "ws": "^8.11.0"
   },
   "devDependencies": {
     "@types/commander": "^2.12.2",
