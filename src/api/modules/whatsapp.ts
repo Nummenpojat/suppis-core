@@ -2,7 +2,6 @@ import {sendMessage} from "../../modules/whatsapp/commands/sendMessage";
 import {Router, json} from "express";
 import {newWhatsappSession} from "../../modules/whatsapp/main";
 import {sendBulkMessage} from "../../modules/whatsapp/commands/sendBulkMessage";
-import {sendAd} from "../../modules/whatsapp/commands/sendAd";
 
 const router = Router()
 router.use(json())
@@ -29,7 +28,7 @@ router.post('/send/list', (req, res) => {
   res.status(202).send('Message received. Sending messages!')
 
   // Sending messages to list of people
-  sendBulkMessage(req.body.message, "persons")
+  sendBulkMessage(req.body.message, ["3584578385899"])
     .catch((reason) => {
       console.error(reason)
     })
@@ -42,17 +41,6 @@ router.get('/new', async (req, res) => {
     }).catch((reason) => {
     res.status(500).send(`${reason.name}: ${reason.message}, Data: ${reason.data}`)
   })
-})
-
-router.post('/send/ad', (req: any, res: any) => {
-  sendAd("persons")
-    .then(() => {
-      res.status(200).send("Message was sent")
-    })
-    .catch((reason) => {
-      console.log(reason)
-      res.status(500).send(`${reason.name}: ${reason.message}, Data: ${reason.data}`)
-    })
 })
 
 /**
