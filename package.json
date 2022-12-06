@@ -21,6 +21,7 @@
     "express": "^4.18.2",
     "firebase-admin": "^11.2.0",
     "qrcode-terminal": "^0.12.0",
+    "socket.io": "^4.5.4",
     "whatsapp-web.js": "^1.18.3",
     "ws": "^8.11.0"
   },

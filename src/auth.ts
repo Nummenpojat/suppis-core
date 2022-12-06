@@ -17,7 +17,7 @@ export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
     })
 }
 
-const verifyIdToken = async (idToken: string | string[] | undefined): Promise<void> => {
+export const verifyIdToken = async (idToken: string | string[] | undefined): Promise<void> => {
 
   // Verifies that ID token is a string and not something else
   if (typeof idToken == "string") {
