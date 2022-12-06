@@ -5,8 +5,8 @@ import * as express from "express"
 import {whatsappRouter} from "./api/modules/whatsapp";
 import {checkAuth, setUserToAdmin} from "./auth";
 import {json} from "express";
-import {WebSocket, WebSocketServer} from "ws";
-import {client, handleWhatsappSend, whatsapp} from "./modules/whatsapp/main";
+import {WebSocketServer} from "ws";
+import {whatsapp} from "./modules/whatsapp/main";
 const cors = require("cors")
 
 /**
@@ -23,18 +23,17 @@ export const db = getFirestore(firebase);
 
 const PORT = 3001
 
+const httpLibrary = require("http")
 const http = express()
+const httpServer = httpLibrary.createServer(http)
 const socketServer = new WebSocketServer({
-  port: 3002
-})
-
-socketServer.on('connection', (socket) => {
-  whatsapp(socket);
+  server: httpServer,
+  path: "/ws"
 })
 
 http.use(cors())
 http.use(json())
-http.use("/", checkAuth)
+http.use(checkAuth)
 http.use('/modules/whatsapp', whatsappRouter)
 
 http.get('/', (req: any, res: any) => {
@@ -47,5 +46,9 @@ http.put('/admin', (req, res) => {
     .catch((reason) => res.status(reason.status).send(reason.reason))
 })
 
-http.listen(PORT);
+socketServer.on('connection', (socket) => {
+  whatsapp(socket);
+})
+
+httpServer.listen(PORT);
 console.log(`App listening on port: ${PORT}`)

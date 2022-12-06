@@ -71,18 +71,38 @@ export const whatsapp = (socket: WebSocket) => {
     socket.send("Client is ready")
 
     socket.on('message', (rawMessage: any) => {
-      handleWhatsappSend(rawMessage);
+      handleWhatsappSend(rawMessage)
+        .then(() => {
+          socket.send("Message sent!")
+        })
+        .catch((reason) => {
+          socket.send(reason)
+        })
     })
+  })
+
+  client.on("auth_failure", (reason) => {
+    socket.send(reason)
+  })
+
+  client.on("disconnected", (reason) => {
+    socket.send(reason)
   })
 }
 
-export const handleWhatsappSend = (rawMessage: any) => {
-  const message: { type: string, number: string, message: string } = JSON.parse(rawMessage)
-  if (message.type == "one") {
-    sendMessage(message.number, message.message)
-  }
-  if (message.type == "list") {
-    sendBulkMessage(message.message, ["NUMBER HERE"])
+export const handleWhatsappSend = async (rawMessage: any) => {
+  try {
+    const message: { type: string, number: string, message: string } = JSON.parse(rawMessage)
+    if (message.type == "one") {
+      await sendMessage(message.number, message.message)
+      return
+    }
+    if (message.type == "list") {
+      await sendBulkMessage(message.message, ["NUMBER HERE"])
+      return
+    }
+  } catch (error) {
+    throw `Error "${error}" occured when trying to send message`
   }
 }
 

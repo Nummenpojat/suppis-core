@@ -32,11 +32,9 @@ export const sendMessage = async (phoneNumber: string, message: string) => {
   // Sending message to chosen chat
   client.sendMessage(chatId, message)
     .then((message: Message) => {
-
       console.log(`Message ${message.body} sent`);
-
     })
-    .catch((error: Error) => {
+    .catch((error) => {
       throw error
     })
 }
