@@ -1,17 +1,4 @@
-import {Message} from "whatsapp-web.js";
-import {client} from "../main";
-
-async function isRegisteredWhatsappUser(chatId: string) {
-  await client.isRegisteredUser(chatId)
-    .then((result) => {
-      if (!result) {
-        throw "Person you are trying to send the message is not registered user"
-      }
-    })
-    .catch((reason) => {
-      throw reason
-    })
-}
+import {client, isRegisteredWhatsappUser} from "../main";
 
 /**
  *  Send message with Whatsapp to single number

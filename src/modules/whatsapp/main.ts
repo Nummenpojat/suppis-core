@@ -75,6 +75,18 @@ export const whatsapp = (socket: Socket) => {
     socket.send("Client is ready")
 
     socket.on('message', (message: any) => {
+
+      if (message.type == "logout") {
+        client.logout()
+          .then(() => {
+            socket.send("Client successfully logged out. Now logging you out")
+            socket.disconnect()
+          })
+          .catch((reason) => {
+            throw reason
+          })
+      }
+
       handleWhatsappSend(message)
         .then(() => {
           socket.send("Message sent!")
@@ -107,6 +119,18 @@ export const handleWhatsappSend = async (message: any) => {
   } catch (error) {
     throw `Error "${error}" occured when trying to send message`
   }
+}
+
+export async function isRegisteredWhatsappUser(chatId: string) {
+  await client.isRegisteredUser(chatId)
+    .then((result) => {
+      if (!result) {
+        throw "Person you are trying to send the message is not registered user"
+      }
+    })
+    .catch((reason) => {
+      throw reason
+    })
 }
 
 
