@@ -1,6 +1,18 @@
 import {Message} from "whatsapp-web.js";
 import {client} from "../main";
 
+async function isRegisteredWhatsappUser(chatId: string) {
+  await client.isRegisteredUser(chatId)
+    .then((result) => {
+      if (!result) {
+        throw "Person you are trying to send the message is not registered user"
+      }
+    })
+    .catch((reason) => {
+      throw reason
+    })
+}
+
 /**
  *  Send message with Whatsapp to single number
  *  @param phoneNumber Number that message is sent
@@ -29,12 +41,18 @@ export const sendMessage = async (phoneNumber: string, message: string) => {
   //Making chat id from phone number to use at client.sendMessage to identify where to send the message
   const chatId = phoneNumber + "@c.us"
 
-  // Sending message to chosen chat
-  client.sendMessage(chatId, message)
-    .then((message: Message) => {
-      console.log(`Message ${message.body} sent`);
-    })
-    .catch((error) => {
-      throw error
-    })
+  try {
+
+    // Checking user so application doesn't crash
+    await isRegisteredWhatsappUser(chatId);
+
+    // Sending message to chosen chat
+    const returnMessage = await client.sendMessage(chatId, message)
+
+    console.log(`Message ${returnMessage.body} sent`);
+    return `Message ${returnMessage.body} sent`
+
+  } catch (error) {
+    throw error
+  }
 }

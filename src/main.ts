@@ -28,14 +28,18 @@ const PORT = 3001
 const httpLibrary = require("http")
 const http = express()
 const httpServer = httpLibrary.createServer(http)
-const io = new Server(httpServer)
+const io = new Server(httpServer, {
+  cors: {
+    origin: "*"
+  }
+})
 
 http.use(cors())
 http.use(json())
 http.use(checkAuth)
 http.use('/modules/whatsapp', whatsappRouter)
 
-/*io.use((socket, next) => {
+io.use((socket, next) => {
   verifyIdToken(socket.handshake.headers.idtoken)
     .then(() => {
       next()
@@ -43,9 +47,10 @@ http.use('/modules/whatsapp', whatsappRouter)
     .catch((reason) => {
       next(new Error(reason))
     })
-})*/
+})
 
 io.on('connection', (socket: Socket) => {
+  console.log(`User ${socket.id} connected!`)
   whatsapp(socket)
 })
 

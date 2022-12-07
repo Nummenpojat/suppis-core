@@ -61,6 +61,9 @@ export const listenWhatsapp = () => {
 }
 
 export const whatsapp = (socket: Socket) => {
+
+  socket.send("Initializing client")
+
   client.initialize()
 
   client.on("qr", (qr) => {
