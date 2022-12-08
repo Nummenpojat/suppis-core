@@ -1,10 +1,9 @@
-import {Client, LocalAuth, Message} from "whatsapp-web.js";
+import {Client, LocalAuth} from "whatsapp-web.js";
 import {sendMessage} from "./commands/sendMessage";
 import {sendBulkMessage} from "./commands/sendBulkMessage";
-import {WebSocket} from "ws";
 import {Socket} from "socket.io";
 
-const qrcode = require('qrcode-terminal');
+const qrCodeTerminal = require('qrcode-terminal');
 
 // Client configuration and exporting to other module parts
 export const client = new Client({
@@ -12,100 +11,42 @@ export const client = new Client({
   takeoverOnConflict: true
 });
 
-// Making new Whatsapp Web session to use when user wants to do something with Whatsapp module
-/**
- * Generates new Whatsapp session
- * @param maxAllowedLoadTime Is milliseconds that function allows Whatsapp to load new session. Default 30000 milliseconds
- * @return Promise<string> that is used to generate new Whatsapp session
- * */
-export const newWhatsappSession = async (maxAllowedLoadTime?: number): Promise<string> => {
-  return await new Promise((resolve, reject) => {
-    console.log("Generating QR code...")
+export let clientReady = false
+export let qr = ""
 
-    client.initialize()
-
-    client.on("ready", () => {
-      reject("Whatsapp session already existed")
-    })
-
-    client.on('qr', (qr) => {
-      resolve(qr)
-    })
-
-    setTimeout(() => {
-      reject("Qr wasn't emitted in 30 seconds")
-    }, maxAllowedLoadTime || 30000);
-  })
-}
-
-/**
- * Listens for messages in Whatsapp <br/>
- * Prints messages to the terminal
- * */
-export const listenWhatsapp = () => {
-  console.log("Connecting to Whatsapp...")
-
-  client.on('ready', () => {
-    console.log('Ready to receive messages!');
-  });
-
-  client.on('message', (message: Message) => {
-    console.log(message.from)
-    console.log(message.body);
-  });
+export const startWhatsappSession = async () => {
+  console.log("Initializing client")
 
   client.initialize()
-    .then(() => {
-      console.log("initialized")
-    });
+
+  client.on('ready', () => {
+    console.log("Client is ready!")
+    clientReady = true
+    return;
+  })
+
+  client.on('qr', (tempqr) => {
+    qr = tempqr
+  })
 }
 
 export const whatsapp = (socket: Socket) => {
 
-  socket.send("Initializing client")
+  socket.send("Client is ready!")
 
-  client.initialize()
-    .catch((reason) => {
-      socket.send(reason)
-    })
-
-  client.on("qr", (qr) => {
-    socket.send(qr)
+  socket.on('message', (message: any) => {
+    handleWhatsappSend(message)
+      .then(() => {
+        socket.send("Message sent!")
+      })
+      .catch((reason) => {
+        socket.send(reason)
+      })
   })
 
-  client.on("ready", () => {
-
-    socket.send("Client is ready")
-
-    socket.on('message', (message: any) => {
-
-      if (message.type == "logout") {
-        client.logout()
-          .then(() => {
-            socket.send("Client successfully logged out. Now logging you out")
-            socket.disconnect()
-          })
-          .catch((reason) => {
-            throw reason
-          })
-      }
-
-      handleWhatsappSend(message)
-        .then(() => {
-          socket.send("Message sent!")
-        })
-        .catch((reason) => {
-          socket.send(reason)
-        })
-    })
-  })
-
-  client.on("auth_failure", (reason) => {
-    socket.send(reason)
-  })
-
-  client.on("disconnected", (reason) => {
-    socket.send(reason)
+  socket.on("disconnect", (disconnectReason) => {
+    qr = ""
+    console.log(disconnectReason)
   })
 }
 

@@ -2,11 +2,9 @@ import {getFirestore} from "firebase-admin/firestore";
 import {initializeApp} from "firebase-admin/app";
 import {credential} from "firebase-admin";
 import * as express from "express"
-import {whatsappRouter} from "./api/modules/whatsapp";
-import {checkAuth, setUserToAdmin, verifyIdToken} from "./auth";
+import {httpCheckAuth, setUserToAdmin, wsCheckAuth} from "./auth";
 import {json} from "express";
-import {WebSocketServer} from "ws";
-import {client, whatsapp} from "./modules/whatsapp/main";
+import {client, clientReady, qr, startWhatsappSession, whatsapp} from "./modules/whatsapp/main";
 import {Server, Socket} from "socket.io";
 
 const cors = require("cors")
@@ -36,29 +34,35 @@ const io = new Server(httpServer, {
 
 http.use(cors())
 http.use(json())
-http.use(checkAuth)
-http.use('/modules/whatsapp', whatsappRouter)
+http.use(httpCheckAuth)
 
-io.use((socket, next) => {
-  verifyIdToken(socket.handshake.headers.idtoken)
-    .then(() => {
-      next()
-    })
-    .catch((reason) => {
-      next(new Error(reason))
-    })
-})
+//io.use(wsCheckAuth)
+
+startWhatsappSession()
+  .then((result) => {
+    console.log(result)
+  })
 
 io.on('connection', (socket: Socket) => {
   console.log(`User ${socket.id} connected!`)
-  whatsapp(socket)
 
-  socket.on("disconnect", (disconnectReason) => {
-    client.destroy()
-      .catch((reason) => {
-        console.log(reason)
-      })
-    console.log(disconnectReason)
+  client.on('ready', () => {
+    whatsapp(socket)
+  })
+
+  if (clientReady) {
+    whatsapp(socket)
+  }
+
+  if (qr != "") {
+    socket.send({
+      type: "qr",
+      message: qr
+    })
+  }
+
+  client.on('qr', (qrLocal) => {
+    socket.send(qrLocal)
   })
 })
 
