@@ -54,6 +54,8 @@ io.on('connection', (socket: Socket) => {
     whatsapp(socket)
   }
 
+  socket.send("Client is not yet ready")
+
   if (qr != "") {
     socket.send({
       type: "qr",
