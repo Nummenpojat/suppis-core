@@ -6,7 +6,7 @@ import {whatsappRouter} from "./api/modules/whatsapp";
 import {checkAuth, setUserToAdmin, verifyIdToken} from "./auth";
 import {json} from "express";
 import {WebSocketServer} from "ws";
-import {whatsapp} from "./modules/whatsapp/main";
+import {client, whatsapp} from "./modules/whatsapp/main";
 import {Server, Socket} from "socket.io";
 
 const cors = require("cors")
@@ -52,6 +52,14 @@ io.use((socket, next) => {
 io.on('connection', (socket: Socket) => {
   console.log(`User ${socket.id} connected!`)
   whatsapp(socket)
+
+  socket.on("disconnect", (disconnectReason) => {
+    client.destroy()
+      .catch((reason) => {
+        console.log(reason)
+      })
+    console.log(disconnectReason)
+  })
 })
 
 http.get('/', (req: any, res: any) => {

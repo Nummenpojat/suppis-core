@@ -65,6 +65,9 @@ export const whatsapp = (socket: Socket) => {
   socket.send("Initializing client")
 
   client.initialize()
+    .catch((reason) => {
+      socket.send(reason)
+    })
 
   client.on("qr", (qr) => {
     socket.send(qr)
