@@ -4,8 +4,7 @@ import {credential} from "firebase-admin";
 import * as express from "express"
 import {httpCheckAuth, setUserToAdmin, wsCheckAuth} from "./auth";
 import {json} from "express";
-import {startWhatsappSession, handleSocketConnection} from "./modules/whatsapp/main";
-import {Server, Socket} from "socket.io";
+import {startWhatsappSession} from "./modules/whatsapp/main";
 
 const cors = require("cors")
 
@@ -26,26 +25,15 @@ const PORT = 3001
 const httpLibrary = require("http")
 const http = express()
 const httpServer = httpLibrary.createServer(http)
-const io = new Server(httpServer, {
-  cors: {
-    origin: "*"
-  }
-})
 
 http.use(cors())
 http.use(json())
 http.use(httpCheckAuth)
 
-io.use(wsCheckAuth)
-
 startWhatsappSession()
   .then((result) => {
     console.log(result)
   })
-
-io.on('connection', (socket: Socket) => {
-  handleSocketConnection(socket)
-})
 
 http.get('/', (req: any, res: any) => {
   res.send("This is Suppis!")
