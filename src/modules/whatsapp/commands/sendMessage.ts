@@ -1,5 +1,4 @@
-import {Message} from "whatsapp-web.js";
-import {client} from "../main";
+import {client, isRegisteredWhatsappUser} from "../main";
 
 /**
  *  Send message with Whatsapp to single number
@@ -20,31 +19,27 @@ export const sendMessage = async (phoneNumber: string, message: string) => {
     throw "You need to provide message to send"
   }
 
-  client.on('ready', async () => {
 
-    // Removing + at the start if it exits so the phone number is in right format
-    if (phoneNumber.startsWith('+')) {
-      phoneNumber = phoneNumber.substring(1)
-    }
+  // Removing + at the start if it exits so the phone number is in right format
+  if (phoneNumber.startsWith('+')) {
+    phoneNumber = phoneNumber.substring(1)
+  }
 
-    //Making chat id from phone number to use at client.sendMessage to identify where to send the message
-    const chatId = phoneNumber + "@c.us"
+  //Making chat id from phone number to use at client.sendMessage to identify where to send the message
+  const chatId = phoneNumber + "@c.us"
 
-      // Sending message to chosen chat
-      client.sendMessage(chatId, message)
-        .then((message: Message) => {
+  try {
 
-          console.log(`Message ${message.body} sent`);
+    // Checking user so application doesn't crash
+    await isRegisteredWhatsappUser(chatId);
 
-        })
-        .catch((error: Error) => {
-          throw error
-        })
-  });
+    // Sending message to chosen chat
+    const returnMessage = await client.sendMessage(chatId, message)
 
-  client.on('auth_failure', (message: string) => {
-    console.log(message)
-  })
+    console.log(`Message ${returnMessage.body} sent`);
+    return `Message ${returnMessage.body} sent`
 
-  client.initialize();
+  } catch (error) {
+    throw error
+  }
 }

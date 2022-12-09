@@ -1,15 +1,16 @@
 import {NextFunction, Request, Response} from "express";
 import {DecodedIdToken, getAuth, UserRecord} from "firebase-admin/auth";
+import {Socket} from "socket.io";
 
 /**
- * Verifies authentication that came with API request
+ * Verifies authentication that came with http API request
  * @param req
  * @param res
  * @param next
  */
-export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
+export const httpCheckAuth = (req: Request, res: Response, next: NextFunction) => {
   verifyIdToken(req.headers.idtoken)
-    .then((result) => {
+    .then(() => {
       next()
     })
     .catch((reason) => {
@@ -17,7 +18,22 @@ export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
     })
 }
 
-const verifyIdToken = async (idToken: string | string[] | undefined): Promise<void> => {
+/**
+ * Verifies authentication that came with Socket.io request
+ * @param socket
+ * @param next
+ */
+export const wsCheckAuth = (socket: Socket, next: any) => {
+  verifyIdToken(socket.handshake.headers.idtoken)
+    .then(() => {
+      next()
+    })
+    .catch((reason) => {
+      next(new Error(reason))
+    })
+}
+
+export const verifyIdToken = async (idToken: string | string[] | undefined): Promise<void> => {
 
   // Verifies that ID token is a string and not something else
   if (typeof idToken == "string") {

@@ -2,23 +2,20 @@
 
 Innovative way to market and communicate
 
-## Command line tool
+## How to install
 
-Use Suppis through command line
+1. Clone project to your computer with : `git clone https://github.com/Nummenpojat/suppis-core.git`
+2. Run `npm install` to install dependencies of [Suppis-core](https://github.com/Nummenpojat/suppis-core)
+3. Run `npm install -g ts-node` to install ts-node, so you don't have to build the project every time
+4. Now you can run `npm run dev` or `npm run start` to start up the app
 
-### How to install
 
-1. Clone project to your computer with : <code>git clone https://github.com/Nummenpojat/suppis-core.git`</code>
-2. Run <code>npm install</code> to install all dependencies of [Suppis-core](https://github.com/Nummenpojat/suppis-core)
-3. Compile Typescript to Javascript with <code>npm run build</code>
-3. Run <code>npm i -g</code> to install Suppis as global script
-4. Now you can run <code>suppis</code> command anywhere
-
-#### If you want to send same message to list of people
+## How to configure [Firebase](https://firebase.google.com/)
 1. Make Firebase project
-2. Go to project settings => Service accounts => Firebase Admin sdk => and download your private key
-3. Copy the serviceAccountKey.json file to your project
-4. Configure src/main.ts to use your serviceAccountKey.json<br/>
+2. Go to Authentication and enable Google as sign-in provider
+3. Go to project settings >> Service accounts >> Firebase Admin sdk >> and download your private key
+4. Copy the serviceAccountKey.json file to your project
+5. Configure src/main.ts to use your serviceAccountKey.json<br/>
   ```typescript 
   // This is right after imports on src/main.ts
   const ServiceAccount = require('yourServiceAccountKeyFilePathHere');
@@ -26,16 +23,19 @@ Use Suppis through command line
     credential: credential.cert(ServiceAccount)
   });
   ```
-5. Add some numbers by firebase console to persons / [person id] / number: [phone number] **Also remember that name is required**
-6. Now you can use <code>suppis send [your message] list</code> to send message to everybody at persons collection
-
-### Things to know before using
-- When creating new Whatsapp session wait until the session finishes synchronizing so your session gets saved
-
 ## API
-### Backend APIs
-- send advertisement --- /module/whatsapp/send/ad
-- send message to list of people --- /module/whatsapp/send/list
-- send message to single person --- /module/whatsapp/send/one
-- make new whatsapp session --- /module/whatsapp/new
-- make user admin --- /admin
+### HTTP
+- make user admin on /admin
+  - Put request
+  - takes email of the person on the body that is given admin permissions
+
+### Socket.io
+- Entrypoint ws://domain
+- How send message 👇
+```json
+{
+  "type": "one",     
+  "number": "<phone number>", 
+  "message": "<message>"      
+}
+```
