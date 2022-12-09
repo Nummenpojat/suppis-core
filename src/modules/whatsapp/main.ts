@@ -3,16 +3,14 @@ import {sendMessage} from "./commands/sendMessage";
 import {sendBulkMessage} from "./commands/sendBulkMessage";
 import {Socket} from "socket.io";
 
-const qrCodeTerminal = require('qrcode-terminal');
-
 // Client configuration and exporting to other module parts
 export const client = new Client({
   authStrategy: new LocalAuth({dataPath: "./config/whatsapp"}),
   takeoverOnConflict: true
 });
 
-export let clientReady = false
-export let qr = ""
+let clientReady = false
+let qr = ""
 
 export const startWhatsappSession = async () => {
   console.log("Initializing client")
@@ -30,8 +28,7 @@ export const startWhatsappSession = async () => {
   })
 }
 
-export const whatsapp = (socket: Socket) => {
-
+function messageListener(socket: Socket) {
   socket.send("Client is ready!")
 
   socket.on('message', (message: any) => {
@@ -43,6 +40,32 @@ export const whatsapp = (socket: Socket) => {
         socket.send(reason)
       })
   })
+}
+
+export const handleSocketConnection = (socket: Socket) => {
+  console.log(`User ${socket.id} connected!`)
+
+  client.on('ready', () => {
+    messageListener(socket);
+  })
+
+  if (clientReady) {
+    messageListener(socket)
+  }
+
+  socket.send("Client is not yet ready")
+
+  if (qr != "") {
+    socket.send({
+      type: "qr",
+      message: qr
+    })
+  }
+
+  client.on('qr', (qrLocal) => {
+    socket.send(qrLocal)
+  })
+
 
   socket.on("disconnect", (disconnectReason) => {
     qr = ""

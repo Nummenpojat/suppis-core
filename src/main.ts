@@ -4,7 +4,7 @@ import {credential} from "firebase-admin";
 import * as express from "express"
 import {httpCheckAuth, setUserToAdmin, wsCheckAuth} from "./auth";
 import {json} from "express";
-import {client, clientReady, qr, startWhatsappSession, whatsapp} from "./modules/whatsapp/main";
+import {startWhatsappSession, handleSocketConnection} from "./modules/whatsapp/main";
 import {Server, Socket} from "socket.io";
 
 const cors = require("cors")
@@ -18,7 +18,7 @@ const firebase = initializeApp({
   credential: credential.cert(ServiceAccount)
 });
 
-// Firestore database instance
+// Firestore database entrypoint
 export const db = getFirestore(firebase);
 
 const PORT = 3001
@@ -36,7 +36,7 @@ http.use(cors())
 http.use(json())
 http.use(httpCheckAuth)
 
-//io.use(wsCheckAuth)
+io.use(wsCheckAuth)
 
 startWhatsappSession()
   .then((result) => {
@@ -44,28 +44,7 @@ startWhatsappSession()
   })
 
 io.on('connection', (socket: Socket) => {
-  console.log(`User ${socket.id} connected!`)
-
-  client.on('ready', () => {
-    whatsapp(socket)
-  })
-
-  if (clientReady) {
-    whatsapp(socket)
-  }
-
-  socket.send("Client is not yet ready")
-
-  if (qr != "") {
-    socket.send({
-      type: "qr",
-      message: qr
-    })
-  }
-
-  client.on('qr', (qrLocal) => {
-    socket.send(qrLocal)
-  })
+  handleSocketConnection(socket)
 })
 
 http.get('/', (req: any, res: any) => {

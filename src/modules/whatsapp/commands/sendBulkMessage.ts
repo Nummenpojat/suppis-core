@@ -1,4 +1,3 @@
-import {db} from "../../../main";
 import {client} from "../main";
 import {Message} from "whatsapp-web.js";
 
