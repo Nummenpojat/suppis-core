@@ -1,12 +1,11 @@
 import {client} from "../main";
-import {Message} from "whatsapp-web.js";
 
 /**
  * Send same message to list of people
  * @param message Text that is sent to list provided
- * @param listId Id that identifies which list of persons to send the message
+ * @param persons Array that contains numbers of people to send the message
  * */
-export const sendBulkMessage = async (message: string, persons: string[]) => {
+export const sendMessageToList = async (message: string, persons: string[]) => {
 
   console.log('Sending messages...');
 
@@ -28,7 +27,7 @@ export const sendBulkMessage = async (message: string, persons: string[]) => {
 
     // Sending message to chosen chat
     client.sendMessage(chatId, message)
-      .then((message: Message) => {
+      .then((message) => {
         console.log(`Message ${message.body} sent to ${person.name}`);
       })
       .catch((error: Error) => {

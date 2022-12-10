@@ -2,10 +2,10 @@ import {getFirestore} from "firebase-admin/firestore";
 import {initializeApp} from "firebase-admin/app";
 import {credential} from "firebase-admin";
 import * as express from "express"
-import {httpCheckAuth, setUserToAdmin, wsCheckAuth} from "./auth";
+import {httpCheckAuth, setUserToAdmin} from "./auth";
 import {json} from "express";
-import {startWhatsappSession, handleSocketConnection} from "./modules/whatsapp/main";
-import {Server, Socket} from "socket.io";
+import {startWhatsappSession} from "./modules/whatsapp/main";
+import {router as whatsappRouter} from "./router/whatsapp"
 
 const cors = require("cors")
 
@@ -26,26 +26,16 @@ const PORT = 3001
 const httpLibrary = require("http")
 const http = express()
 const httpServer = httpLibrary.createServer(http)
-const io = new Server(httpServer, {
-  cors: {
-    origin: "*"
-  }
-})
 
 http.use(cors())
 http.use(json())
 http.use(httpCheckAuth)
-
-io.use(wsCheckAuth)
+http.use("/whatsapp", whatsappRouter)
 
 startWhatsappSession()
-  .then((result) => {
-    console.log(result)
+  .catch((reason) => {
+    console.log(reason)
   })
-
-io.on('connection', (socket: Socket) => {
-  handleSocketConnection(socket)
-})
 
 http.get('/', (req: any, res: any) => {
   res.send("This is Suppis!")

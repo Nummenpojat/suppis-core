@@ -1,16 +1,14 @@
 {
   "name": "Suppis-core",
-  "version": "1.0.0-Beta",
+  "version": "2.0.0-Beta",
   "description": "Backend for Suppis",
   "main": "dist/main.js",
-  "bin": {
-    "suppis": "/dist/bin/index.js"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node src/main.ts",
     "dev": "nodemon --exec ts-node src/main.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "start-build": "node ./dist/main.js"
   },
   "author": "Nummenpojat",
   "license": "ISC",
@@ -18,7 +16,6 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "firebase-admin": "^11.2.0",
-    "socket.io": "^4.5.4",
     "whatsapp-web.js": "^1.18.3"
   },
   "devDependencies": {

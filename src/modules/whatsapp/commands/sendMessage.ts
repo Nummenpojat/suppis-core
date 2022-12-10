@@ -1,4 +1,4 @@
-import {client, isRegisteredWhatsappUser} from "../main";
+import {client, isClientReady} from "../main";
 
 /**
  *  Send message with Whatsapp to single number
@@ -7,15 +7,13 @@ import {client, isRegisteredWhatsappUser} from "../main";
  **/
 export const sendMessage = async (phoneNumber: string, message: string) => {
 
-  console.log('Sending message...');
-
   // Checking that phone number is not empty
-  if (phoneNumber == "" || phoneNumber == null || phoneNumber == undefined) {
+  if (phoneNumber == "" || phoneNumber == null) {
     throw "You need to provide phone number"
   }
 
   // Checking that message is not empty
-  if (message == "" || message == null || message == undefined) {
+  if (message == "" || message == null) {
     throw "You need to provide message to send"
   }
 
@@ -30,8 +28,7 @@ export const sendMessage = async (phoneNumber: string, message: string) => {
 
   try {
 
-    // Checking user so application doesn't crash
-    await isRegisteredWhatsappUser(chatId);
+    isClientReady()
 
     // Sending message to chosen chat
     const returnMessage = await client.sendMessage(chatId, message)
@@ -39,7 +36,11 @@ export const sendMessage = async (phoneNumber: string, message: string) => {
     console.log(`Message ${returnMessage.body} sent`);
     return `Message ${returnMessage.body} sent`
 
-  } catch (error) {
+  } catch (error: any) {
+    if (error.message != null) {
+      console.log(error, "\n\n\n", error.message)
+      throw error.message
+    }
     throw error
   }
 }

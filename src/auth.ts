@@ -1,6 +1,5 @@
 import {NextFunction, Request, Response} from "express";
 import {DecodedIdToken, getAuth, UserRecord} from "firebase-admin/auth";
-import {Socket} from "socket.io";
 
 /**
  * Verifies authentication that came with http API request
@@ -15,21 +14,6 @@ export const httpCheckAuth = (req: Request, res: Response, next: NextFunction) =
     })
     .catch((reason) => {
       res.status(403).send(`Unauthorized! ${reason}`)
-    })
-}
-
-/**
- * Verifies authentication that came with Socket.io request
- * @param socket
- * @param next
- */
-export const wsCheckAuth = (socket: Socket, next: any) => {
-  verifyIdToken(socket.handshake.headers.idtoken)
-    .then(() => {
-      next()
-    })
-    .catch((reason) => {
-      next(new Error(reason))
     })
 }
 

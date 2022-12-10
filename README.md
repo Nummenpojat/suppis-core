@@ -8,6 +8,7 @@ Innovative way to market and communicate
 2. Run `npm install` to install dependencies of [Suppis-core](https://github.com/Nummenpojat/suppis-core)
 3. Run `npm install -g ts-node` to install ts-node, so you don't have to build the project every time
 4. Now you can run `npm run dev` or `npm run start` to start up the app
+   - If you want to build the app run `npm run build
 
 
 ## How to configure [Firebase](https://firebase.google.com/)
@@ -24,18 +25,9 @@ Innovative way to market and communicate
   });
   ```
 ## API
-### HTTP
-- make user admin on /admin
+- Make user admin on `/admin`
   - Put request
-  - takes email of the person on the body that is given admin permissions
-
-### Socket.io
-- Entrypoint ws://domain
-- How send message 👇
-```json
-{
-  "type": "one",     
-  "number": "<phone number>", 
-  "message": "<message>"      
-}
-```
+  - Takes email in body
+- Send message to one person on `/whatsapp/send/one`
+  - Post request
+  - Takes a message and a number in body
