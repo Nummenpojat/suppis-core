@@ -5,36 +5,34 @@ export const client = new Client({
   authStrategy: new LocalAuth({dataPath: "./config/whatsapp"}),
   takeoverOnConflict: true
 });
+export let qr = ""
 
-let clientReady = false
-let qr = ""
+export const isClientReady = () => {
+
+  if (client.info == undefined) {
+    throw "Client wasn't ready and qr was empty. Try again shortly"
+  }
+
+  if (qr != "") {
+    throw {
+      type: "qr",
+      message: qr
+    }
+  }
+}
 
 export const startWhatsappSession = async () => {
-  console.log("Initializing client")
 
   client.initialize()
 
   client.on('ready', () => {
-    console.log("Client is ready!")
-    clientReady = true
+    console.log("Whatsapp client is ready!")
     return;
   })
 
   client.on('qr', (tempqr) => {
     qr = tempqr
   })
-}
-
-export async function isRegisteredWhatsappUser(chatId: string) {
-  await client.isRegisteredUser(chatId)
-    .then((result) => {
-      if (!result) {
-        throw "Person you are trying to send the message is not registered user"
-      }
-    })
-    .catch((reason) => {
-      throw reason
-    })
 }
 
 

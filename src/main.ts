@@ -2,9 +2,10 @@ import {getFirestore} from "firebase-admin/firestore";
 import {initializeApp} from "firebase-admin/app";
 import {credential} from "firebase-admin";
 import * as express from "express"
-import {httpCheckAuth, setUserToAdmin, wsCheckAuth} from "./auth";
+import {httpCheckAuth, setUserToAdmin} from "./auth";
 import {json} from "express";
 import {startWhatsappSession} from "./modules/whatsapp/main";
+import {router as whatsappRouter} from "./router/whatsapp"
 
 const cors = require("cors")
 
@@ -28,11 +29,12 @@ const httpServer = httpLibrary.createServer(http)
 
 http.use(cors())
 http.use(json())
-http.use(httpCheckAuth)
+//http.use(httpCheckAuth)
+http.use("/whatsapp", whatsappRouter)
 
 startWhatsappSession()
-  .then((result) => {
-    console.log(result)
+  .catch((reason) => {
+    console.log(reason)
   })
 
 http.get('/', (req: any, res: any) => {
