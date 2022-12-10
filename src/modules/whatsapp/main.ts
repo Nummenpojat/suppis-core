@@ -5,6 +5,7 @@ export const client = new Client({
   authStrategy: new LocalAuth({dataPath: "./config/whatsapp"}),
   takeoverOnConflict: true
 });
+
 export let qr = ""
 
 export const isClientReady = () => {
@@ -23,15 +24,15 @@ export const isClientReady = () => {
 
 export const startWhatsappSession = async () => {
 
-  client.initialize()
+  await client.initialize()
 
   client.on('ready', () => {
     console.log("Whatsapp client is ready!")
     return;
   })
 
-  client.on('qr', (tempqr) => {
-    qr = tempqr
+  client.on('qr', (tempQr) => {
+    qr = tempQr
   })
 }
 
