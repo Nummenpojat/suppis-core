@@ -28,6 +28,9 @@ Innovative way to market and communicate
 - Make user admin on `/admin`
   - Put request
   - Takes email in body
+  - Responses with string on the body
 - Send message to one person on `/whatsapp/send/one`
   - Post request
   - Takes a message and a number in body
+  - Responses with string on the body
+    - On status code 409 responses with string on the body containing qr
