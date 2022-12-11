@@ -1,6 +1,6 @@
 {
   "name": "Suppis-core",
-  "version": "2.0.0-Beta",
+  "version": "1.0.1-Beta",
   "description": "Backend for Suppis",
   "main": "dist/main.js",
   "scripts": {

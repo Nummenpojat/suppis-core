@@ -1,5 +1,6 @@
 import {Router} from "express";
 import {sendMessage} from "../modules/whatsapp/commands/sendMessage";
+import {qr} from "../modules/whatsapp/main";
 
 export const router = Router()
 
@@ -9,7 +10,11 @@ router.post("/send/one", (req, res) => {
       res.status(200).send(result)
     })
     .catch((reason) => {
-      res.status(500).send(reason)
+      if (reason.type == "qr") {
+        res.status(409).send(qr)
+      } else {
+        res.status(500).send(reason)
+      }
     })
 })
 

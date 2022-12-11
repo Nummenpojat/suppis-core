@@ -37,8 +37,7 @@ export const sendMessage = async (phoneNumber: string, message: string) => {
     return `Message ${returnMessage.body} sent`
 
   } catch (error: any) {
-    if (error.message != null) {
-      console.log(error, "\n\n\n", error.message)
+    if (error.message != undefined) {
       throw error.message
     }
     throw error

@@ -10,28 +10,32 @@ export let qr = ""
 
 export const isClientReady = () => {
 
-  if (client.info == undefined) {
-    throw "Client wasn't ready and qr was empty. Try again shortly"
-  }
-
   if (qr != "") {
     throw {
       type: "qr",
-      message: qr
+      qr: qr
     }
+  }
+
+  if (client.info == undefined) {
+    throw "Client wasn't ready and qr was empty. Try again shortly"
   }
 }
 
 export const startWhatsappSession = async () => {
 
-  await client.initialize()
+  console.log("Starting new Whatsapp session")
+
+  client.initialize()
 
   client.on('ready', () => {
+    qr = ""
     console.log("Whatsapp client is ready!")
     return;
   })
 
   client.on('qr', (tempQr) => {
+    console.log("Login with QR is needed!")
     qr = tempQr
   })
 }
