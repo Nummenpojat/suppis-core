@@ -40,6 +40,25 @@ export const startWhatsappSession = async () => {
   })
 }
 
+export const checkNumbers = async (numbers: string[]) => {
+  for (const num of numbers) {
+
+    //Making chat id from phone number to use at client.sendMessage to identify where to send the message
+    let chatId = num + "@c.us"
+
+    // Removing + at the start if it exits so the phone number is in right format
+    if (chatId.startsWith('+')) {
+      chatId = chatId.substring(1)
+    }
+
+    try {
+      await client.isRegisteredUser(chatId)
+    } catch (error: any) {
+      throw error.message
+    }
+  }
+}
+
 
 
 

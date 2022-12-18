@@ -29,7 +29,7 @@ const httpServer = httpLibrary.createServer(http)
 
 http.use(cors())
 http.use(json())
-//http.use(httpCheckAuth)
+http.use(httpCheckAuth)
 http.use("/whatsapp", whatsappRouter)
 
 startWhatsappSession()

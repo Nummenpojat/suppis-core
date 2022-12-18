@@ -1,4 +1,4 @@
-import {client, isClientReady} from "../main";
+import {checkNumbers, client, isClientReady} from "../main";
 
 /**
  * Send same message to list of people
@@ -12,7 +12,17 @@ export const sendMessageToList = async (message: string, numbers: string[]) => {
     throw "You need to provide message to send"
   }
 
-  // Sending message to each on the list
+  try {
+
+    // Checking that message can be sent
+    isClientReady()
+    await checkNumbers(numbers);
+
+  } catch (error) {
+    throw error
+  }
+
+  // Sending message to each number on the list
   for (const num of numbers) {
 
     //Making chat id from phone number to use at client.sendMessage to identify where to send the message
@@ -25,12 +35,10 @@ export const sendMessageToList = async (message: string, numbers: string[]) => {
 
     try {
 
-      isClientReady()
-
       // Sending message to chosen chat
       const returnMessage = await client.sendMessage(chatId, message)
 
-      console.log(`Message ${returnMessage.body} sent to ${num}`);
+      console.log(`Message ${message} sent to ${num}`);
 
     } catch (error: any) {
       if (error.message != undefined) {
