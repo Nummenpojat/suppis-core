@@ -34,3 +34,8 @@ Innovative way to market and communicate
   - Takes a message and a number in body
   - Responses with string on the body
     - On status code 409 responses with string on the body containing qr
+- Send message to list of people on `/whatsapp/send/list`
+  - Post request
+  - Takes a message and list of numbers in body
+  - Responses with string on the body
+    - On status code 409 responses with string on the body containing qr
