@@ -8,7 +8,7 @@ Innovative way to market and communicate
 2. Run `npm install` to install dependencies of [Suppis-core](https://github.com/Nummenpojat/suppis-core)
 3. Run `npm install -g ts-node` to install ts-node, so you don't have to build the project every time
 4. Now you can run `npm run dev` or `npm run start` to start up the app
-   - If you want to build the app run `npm run build
+   - If you want to build the app run `npm run build`
 
 
 ## How to configure [Firebase](https://firebase.google.com/)
