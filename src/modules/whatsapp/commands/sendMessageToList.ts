@@ -36,8 +36,7 @@ export const sendMessageToList = async (message: string, numbers: string[]) => {
     try {
 
       // Sending message to chosen chat
-      const returnMessage = await client.sendMessage(chatId, message)
-
+      await client.sendMessage(chatId, message);
       console.log(`Message ${message} sent to ${num}`);
 
     } catch (error: any) {

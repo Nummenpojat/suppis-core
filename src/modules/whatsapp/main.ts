@@ -43,7 +43,7 @@ export const startWhatsappSession = async () => {
 export const checkNumbers = async (numbers: string[]) => {
   for (const num of numbers) {
 
-    //Making chat id from phone number to use at client.sendMessage to identify where to send the message
+    // Making chat id from phone number to use at client.isRegisteredUser to use as number which is checked
     let chatId = num + "@c.us"
 
     // Removing + at the start if it exits so the phone number is in right format
@@ -52,9 +52,16 @@ export const checkNumbers = async (numbers: string[]) => {
     }
 
     try {
-      await client.isRegisteredUser(chatId)
+      const isRegistered = await client.isRegisteredUser(chatId)
+      if (!isRegistered) {
+        throw `Number ${num} is invalid`
+      }
+      console.log(`${num} is valid`)
     } catch (error: any) {
-      throw error.message
+      if (error.message != undefined) {
+        throw error.message
+      }
+      throw error
     }
   }
 }
