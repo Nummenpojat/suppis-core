@@ -25,6 +25,10 @@ router.post("/send/list", (req, res) => {
       res.status(200).send("Messages sent")
     })
     .catch((reason) => {
-      res.status(500).send(reason)
+      if (reason.type == "qr") {
+        res.status(409).send(qr)
+      } else {
+        res.status(500).send(reason)
+      }
     })
 })
