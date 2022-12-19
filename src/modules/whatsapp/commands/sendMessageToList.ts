@@ -1,37 +1,49 @@
-import {client} from "../main";
+import {checkNumbers, client, isClientReady} from "../main";
 
 /**
  * Send same message to list of people
  * @param message Text that is sent to list provided
  * @param persons Array that contains numbers of people to send the message
  * */
-export const sendMessageToList = async (message: string, persons: string[]) => {
-
-  console.log('Sending messages...');
+export const sendMessageToList = async (message: string, numbers: string[]) => {
 
   // Checking that message is not empty
   if (message == "" || message == null) {
     throw "You need to provide message to send"
   }
 
-  // Sending message to each on the list
-  persons.forEach((person: any) => {
+  try {
+
+    // Checking that message can be sent
+    isClientReady()
+    await checkNumbers(numbers);
+
+  } catch (error) {
+    throw error
+  }
+
+  // Sending message to each number on the list
+  for (const num of numbers) {
 
     //Making chat id from phone number to use at client.sendMessage to identify where to send the message
-    let chatId = person.number + "@c.us"
+    let chatId = num + "@c.us"
 
     // Removing + at the start if it exits so the phone number is in right format
     if (chatId.startsWith('+')) {
       chatId = chatId.substring(1)
     }
 
-    // Sending message to chosen chat
-    client.sendMessage(chatId, message)
-      .then((message) => {
-        console.log(`Message ${message.body} sent to ${person.name}`);
-      })
-      .catch((error: Error) => {
-        throw error
-      })
-  })
+    try {
+
+      // Sending message to chosen chat
+      await client.sendMessage(chatId, message);
+      console.log(`Message ${message} sent to ${num}`);
+
+    } catch (error: any) {
+      if (error.message != undefined) {
+        throw error.message
+      }
+      throw error
+    }
+  }
 }
