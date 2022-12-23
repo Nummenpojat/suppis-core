@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response} from "express";
-import {DecodedIdToken, getAuth, UserRecord} from "firebase-admin/auth";
+import {getAuth} from "firebase-admin/auth";
 
 /**
  * Verifies authentication that came with http API request
@@ -9,10 +9,11 @@ import {DecodedIdToken, getAuth, UserRecord} from "firebase-admin/auth";
  */
 export const checkAuth = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    await verifyIdToken(req.headers.authorization)
+    await verifyIdToken(req.header("X-Firebase-IdToken"))
     next()
   } catch (error) {
-    res.status(403).send(`Unauthorized! ${error}`)
+    res.status(403)
+    next(`Unauthorized! ${error}`)
   }
 }
 export const verifyIdToken = async (idToken: string | undefined): Promise<void> => {
