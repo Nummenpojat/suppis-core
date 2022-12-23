@@ -3,36 +3,31 @@ import {getAuth} from "firebase-admin/auth";
 
 /**
  * Sets user to admin
- * @param req
+ * @param email
  */
-export const setUserToAdmin = async (req: Request) => {
-
-  if (req.body.email != "" && req.body.email) {
+export const setUserToAdmin = async (email: string) => {
+  try {
+    if (email == "" && email == undefined) {
+      throw "Server didn't receive valid email"
+    }
 
     // Gets user uid with email to have correct params for setting custom claims
-    await getAuth().getUserByEmail(req.body.email)
-      .then(async (user) => {
+    const user = await getAuth().getUserByEmail(email)
 
-        // Set custom claims to user
-        await getAuth().setCustomUserClaims(user.uid, {
-          admin: true
-        }).catch((reason) => {
-          throw {
-            status: 500,
-            reason: reason
-          }
-        })
-      })
-      .catch((reason) => {
-        throw {
-          status: 400,
-          reason: reason
-        }
-      })
-  } else {
-    throw {
-      status: 400,
-      reason: "Server didn't receive valid email"
+    // Checks that user is not yet admin
+    if (user.customClaims?.admin) {
+      throw `${email} is already admin`
     }
+
+    // Set custom claims to user
+    await getAuth().setCustomUserClaims(user.uid, {
+      admin: true
+    })
+
+  } catch (error: any) {
+    if (error.message != undefined) {
+      throw error.message
+    }
+    throw error
   }
 }

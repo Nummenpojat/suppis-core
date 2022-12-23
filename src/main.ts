@@ -28,7 +28,7 @@ const httpServer = httpLibrary.createServer(http)
 
 http.use(cors())
 http.use(json())
-http.use(httpCheckAuth)
+//http.use(httpCheckAuth)
 http.use("/whatsapp", whatsappRouter)
 
 startWhatsappSession()
@@ -36,14 +36,14 @@ startWhatsappSession()
     console.log(reason)
   })
 
-http.get('/', (req: any, res: any) => {
+http.all('/', (req: any, res: any) => {
   res.send("This is Suppis!")
 })
 
 http.put('/admin', (req, res) => {
   setUserToAdmin(req.body.email)
     .then(() => res.status(201).send(`${req.body.email} is now admin`))
-    .catch((reason) => res.status(reason.status).send(reason.reason))
+    .catch((reason) => res.status(500).send(reason))
 })
 
 httpServer.listen(PORT, () => {
