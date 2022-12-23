@@ -1,4 +1,3 @@
-import {Request} from "express";
 import {getAuth} from "firebase-admin/auth";
 
 /**

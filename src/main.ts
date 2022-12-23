@@ -4,7 +4,7 @@ import * as express from "express"
 import {json} from "express";
 import {startWhatsappSession} from "./modules/whatsapp/main";
 import {router as whatsappRouter} from "./router/whatsapp"
-import {httpCheckAuth} from "./auth/core";
+import {checkAuth} from "./auth/core";
 import {setUserToAdmin} from "./auth/setUserToAdmin";
 
 const {config} = require("dotenv")
@@ -28,7 +28,7 @@ const httpServer = httpLibrary.createServer(http)
 
 http.use(cors())
 http.use(json())
-//http.use(httpCheckAuth)
+http.use(checkAuth)
 http.use("/whatsapp", whatsappRouter)
 
 startWhatsappSession()

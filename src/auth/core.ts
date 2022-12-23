@@ -7,14 +7,13 @@ import {DecodedIdToken, getAuth, UserRecord} from "firebase-admin/auth";
  * @param res
  * @param next
  */
-export const httpCheckAuth = (req: Request, res: Response, next: NextFunction) => {
-  verifyIdToken(req.headers.authorization)
-    .then(() => {
-      next()
-    })
-    .catch((reason) => {
-      res.status(403).send(`Unauthorized! ${reason}`)
-    })
+export const checkAuth = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    await verifyIdToken(req.headers.authorization)
+    next()
+  } catch (error) {
+    res.status(403).send(`Unauthorized! ${error}`)
+  }
 }
 export const verifyIdToken = async (idToken: string | undefined): Promise<void> => {
 
