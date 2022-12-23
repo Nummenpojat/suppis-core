@@ -6,9 +6,6 @@ import {getAuth} from "firebase-admin/auth";
  */
 export const setUserToAdmin = async (email: string) => {
   try {
-    if (email == "" && email == undefined) {
-      throw "Server didn't receive valid email"
-    }
 
     // Gets user uid with email to have correct params for setting custom claims
     const user = await getAuth().getUserByEmail(email)
