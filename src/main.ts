@@ -7,6 +7,7 @@ import {json} from "express";
 import {startWhatsappSession} from "./modules/whatsapp/main";
 import {router as whatsappRouter} from "./router/whatsapp"
 
+const {config} = require("dotenv")
 const cors = require("cors")
 
 /**
@@ -21,7 +22,8 @@ const firebase = initializeApp({
 // Firestore database entrypoint
 export const db = getFirestore(firebase);
 
-const PORT = 3001
+config()
+const PORT = process.env.PORT || 3000
 
 const httpLibrary = require("http")
 const http = express()
@@ -47,5 +49,6 @@ http.put('/admin', (req, res) => {
     .catch((reason) => res.status(reason.status).send(reason.reason))
 })
 
-httpServer.listen(PORT);
-console.log(`App listening on port: ${PORT}`)
+httpServer.listen(PORT, () => {
+  console.log(`App listening on port: ${PORT}`)
+});
