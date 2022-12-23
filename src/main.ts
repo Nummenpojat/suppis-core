@@ -1,10 +1,11 @@
 import {initializeApp} from "firebase-admin/app";
 import {credential} from "firebase-admin";
 import * as express from "express"
-import {httpCheckAuth, setUserToAdmin} from "./auth";
 import {json} from "express";
 import {startWhatsappSession} from "./modules/whatsapp/main";
 import {router as whatsappRouter} from "./router/whatsapp"
+import {httpCheckAuth} from "./auth/core";
+import {setUserToAdmin} from "./auth/setUserToAdmin";
 
 const {config} = require("dotenv")
 config()
@@ -40,7 +41,7 @@ http.get('/', (req: any, res: any) => {
 })
 
 http.put('/admin', (req, res) => {
-  setUserToAdmin(req)
+  setUserToAdmin(req.body.email)
     .then(() => res.status(201).send(`${req.body.email} is now admin`))
     .catch((reason) => res.status(reason.status).send(reason.reason))
 })
