@@ -10,17 +10,16 @@ import {getAuth} from "firebase-admin/auth";
 export const checkAuth = async (req: Request, res: Response, next: NextFunction) => {
   try {
     await verifyIdToken(req.header("X-Firebase-IdToken"))
-    next()
+    return next()
   } catch (error) {
-    res.status(403)
-    next(`Unauthorized! ${error}`)
+    res.status(403).send(`Unauthorized! ${error}`)
   }
 }
 export const verifyIdToken = async (idToken: string | undefined): Promise<void> => {
 
   // Verifies that ID token is a string and not something else
   if (typeof idToken != "string") {
-    throw "Authorization header wasn't type string"
+    throw "X-Firebase-IdToken header wasn't type string"
   }
 
   // Verifies ID token to ensure correct access right to API
