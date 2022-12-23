@@ -18,31 +18,19 @@ export const checkAuth = async (req: Request, res: Response, next: NextFunction)
 export const verifyIdToken = async (idToken: string | undefined): Promise<void> => {
 
   // Verifies that ID token is a string and not something else
-  if (typeof idToken == "string") {
-
-    let result: DecodedIdToken
-
-    // Verifies ID token to ensure correct access right to API
-    try {
-      result = await getAuth().verifyIdToken(idToken)
-    } catch (error) {
-      throw "idToken was invalid"
-    }
-
-    // Gets user to check custom claims
-    let user: UserRecord
-
-    try {
-      user = await getAuth().getUser(result.uid)
-    } catch (error) {
-      throw error
-    }
-
-    // Verifies that user has correct access rights
-    if (result.email == "admin.suppis@nummenpojat.fi" || user.customClaims?.admin) {
-      return;
-    }
-    throw "Your email is not on list of permitted emails"
+  if (typeof idToken != "string") {
+    throw "Authorization header wasn't type string"
   }
-  throw "idToken wasn't type string"
+
+  // Verifies ID token to ensure correct access right to API
+  const result = await getAuth().verifyIdToken(idToken)
+
+  // Gets user to check custom claims
+  const user = await getAuth().getUser(result.uid)
+
+  // Verifies that user has correct access rights
+  if (result.email == "admin.suppis@nummenpojat.fi" || user.customClaims?.admin) {
+    return;
+  }
+  throw "Your email is not on list of permitted emails"
 }
