@@ -8,7 +8,7 @@ import {DecodedIdToken, getAuth, UserRecord} from "firebase-admin/auth";
  * @param next
  */
 export const httpCheckAuth = (req: Request, res: Response, next: NextFunction) => {
-  verifyIdToken(req.headers.idtoken)
+  verifyIdToken(req.headers.authorization)
     .then(() => {
       next()
     })
@@ -17,7 +17,7 @@ export const httpCheckAuth = (req: Request, res: Response, next: NextFunction) =
     })
 }
 
-export const verifyIdToken = async (idToken: string | string[] | undefined): Promise<void> => {
+export const verifyIdToken = async (idToken: string | undefined): Promise<void> => {
 
   // Verifies that ID token is a string and not something else
   if (typeof idToken == "string") {
