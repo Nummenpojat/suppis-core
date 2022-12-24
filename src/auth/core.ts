@@ -8,29 +8,29 @@ import {getAuth} from "firebase-admin/auth";
  * @param next
  */
 export const checkAuth = async (req: Request, res: Response, next: NextFunction) => {
+  const idToken = req.header("X-Firebase-IdToken")
+
+  // Verifies that ID token is not undefined
+  if (idToken == null) {
+    res.status(400).send('Bad request! Your request is missing header "X-Firebase-IdToken"')
+    return
+  }
+
   try {
-    await verifyIdToken(req.header("X-Firebase-IdToken"))
-    return next()
+    // Verifies ID token to ensure correct access right to API
+    const result = await getAuth().verifyIdToken(idToken)
+
+    // Gets user to check custom claims
+    const user = await getAuth().getUser(result.uid)
+
+    // Verifies that user has correct access rights
+    if (user.email != "admin.suppis@nummenpojat.fi" && !user.customClaims?.admin) {
+      res.status(403).send('Forbidden! Header "X-Firebase-IdToken" does not contain a valid IdToken')
+      return;
+    }
   } catch (error) {
-    res.status(403).send(`Unauthorized! ${error}`)
+    res.status(401).send(`Unauthorized! ${error}`)
+    return
   }
-}
-export const verifyIdToken = async (idToken: string | undefined): Promise<void> => {
-
-  // Verifies that ID token is a string and not something else
-  if (typeof idToken != "string") {
-    throw "X-Firebase-IdToken header wasn't type string"
-  }
-
-  // Verifies ID token to ensure correct access right to API
-  const result = await getAuth().verifyIdToken(idToken)
-
-  // Gets user to check custom claims
-  const user = await getAuth().getUser(result.uid)
-
-  // Verifies that user has correct access rights
-  if (result.email == "admin.suppis@nummenpojat.fi" || user.customClaims?.admin) {
-    return;
-  }
-  throw "Your email is not on list of permitted emails"
+  next()
 }
