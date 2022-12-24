@@ -9,7 +9,7 @@ import {setUserToAdmin} from "./auth/setUserToAdmin";
 import {appCheck} from "./auth/appCheck";
 const cors = require("cors")
 const {config} = require("dotenv")
-
+config()
 
 // Constant that holds Firebase admin sdk service account
 const ServiceAccount = require(`..${process.env.FIREBASE_SECRET_KEY_PATH}`);
@@ -19,7 +19,6 @@ const firebase = initializeApp({
   credential: credential.cert(ServiceAccount)
 });
 
-config()
 const PORT = process.env.PORT || 3000
 const http = express()
 
