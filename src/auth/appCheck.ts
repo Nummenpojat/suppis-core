@@ -5,18 +5,18 @@ export const appCheck = async (req: Request, res: Response, next: NextFunction) 
   const appCheckToken = req.header('X-Firebase-AppCheck');
 
   if (!appCheckToken) {
-    res.status(401).send('Unauthorized')
+    res.status(400).send('Bad request! Your request is missing header "X-Firebase-AppCheck"')
     return
   }
 
   try {
-    const appCheckClaims = await appCheckFirebase().verifyToken(appCheckToken);
+    await appCheckFirebase().verifyToken(appCheckToken);
 
     // If verifyToken() succeeds, continue with the next middleware function in the stack.
     return next();
 
-  } catch (err) {
-    res.status(403).send('Unauthorized')
+  } catch (error: any) {
+    res.status(403).send(`Forbidden! ${error.message}`)
     return
   }
 }

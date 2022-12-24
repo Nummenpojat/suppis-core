@@ -8,10 +8,10 @@ import {checkAuth} from "./auth/core";
 import {setUserToAdmin} from "./auth/setUserToAdmin";
 import {appCheck} from "./auth/appCheck";
 
+const cors = require("cors")
+
 const {config} = require("dotenv")
 config()
-
-const cors = require("cors")
 
 // Constant that holds Firebase admin sdk service account
 const ServiceAccount = require(`..${process.env.FIREBASE_SECRET_KEY_PATH}`);
@@ -22,15 +22,12 @@ const firebase = initializeApp({
 });
 
 const PORT = process.env.PORT || 3000
-
-const httpLibrary = require("http")
 const http = express()
-const httpServer = httpLibrary.createServer(http)
 
 http.use(cors())
 http.use(json())
-http.use(checkAuth)
 http.use(appCheck)
+http.use(checkAuth)
 http.use("/whatsapp", whatsappRouter)
 
 startWhatsappSession()
@@ -48,6 +45,6 @@ http.put('/admin', (req, res) => {
     .catch((reason) => res.status(500).send(reason))
 })
 
-httpServer.listen(PORT, () => {
+http.listen(PORT, () => {
   console.log(`App listening on port: ${PORT}`)
 });
