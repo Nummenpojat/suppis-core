@@ -10,7 +10,7 @@ Innovative way to market 📣 and communicate 💬
 ## How to configure [Firebase 🔥](https://firebase.google.com/)
 1. Make Firebase project
 2. Go to Authentication and enable Google as sign-in provider
-3. Enable AppCheck. Check [docs](https://firebase.google.com/docs/app-check/web/recaptcha-provider) for the information how to do it *
+3. Enable AppCheck. Check [docs](https://firebase.google.com/docs/app-check/web/recaptcha-provider) for the information how to do it
    - Note that some steps on the documentation referenced above apply to frontend
 4. Go to project settings >> Service accounts >> Firebase Admin sdk >> and download your private key
 5. Copy the serviceAccountKey.json file to your project
