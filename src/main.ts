@@ -1,35 +1,31 @@
-import {getFirestore} from "firebase-admin/firestore";
 import {initializeApp} from "firebase-admin/app";
 import {credential} from "firebase-admin";
 import * as express from "express"
-import {httpCheckAuth, setUserToAdmin} from "./auth";
 import {json} from "express";
 import {startWhatsappSession} from "./modules/whatsapp/main";
 import {router as whatsappRouter} from "./router/whatsapp"
-
+import {checkAuth} from "./auth/core";
+import {setUserToAdmin} from "./auth/setUserToAdmin";
+import {appCheck} from "./auth/appCheck";
 const cors = require("cors")
+const {config} = require("dotenv")
+config()
 
-/**
- * Constant that holds Firebase admin sdk service account <br/>
- * @todo Replace file path with your own firebase admin sdk secret key file
- */
-const ServiceAccount = require('../config/firebase-admin-secrets/suppis-firebase-admin-secrets.json');
+// Constant that holds Firebase admin sdk service account
+const ServiceAccount = require(`..${process.env.FIREBASE_SECRET_KEY_PATH}`);
+
+// Even thought "firebase" shows as unused, it's used as the default app automatically
 const firebase = initializeApp({
   credential: credential.cert(ServiceAccount)
 });
 
-// Firestore database entrypoint
-export const db = getFirestore(firebase);
-
-const PORT = 3001
-
-const httpLibrary = require("http")
+const PORT = process.env.PORT || 3000
 const http = express()
-const httpServer = httpLibrary.createServer(http)
 
 http.use(cors())
 http.use(json())
-http.use(httpCheckAuth)
+http.use(appCheck)
+http.use(checkAuth)
 http.use("/whatsapp", whatsappRouter)
 
 startWhatsappSession()
@@ -37,15 +33,16 @@ startWhatsappSession()
     console.log(reason)
   })
 
-http.get('/', (req: any, res: any) => {
+http.all('/', (req: any, res: any) => {
   res.send("This is Suppis!")
 })
 
 http.put('/admin', (req, res) => {
-  setUserToAdmin(req)
+  setUserToAdmin(req.body.email)
     .then(() => res.status(201).send(`${req.body.email} is now admin`))
-    .catch((reason) => res.status(reason.status).send(reason.reason))
+    .catch((reason) => res.status(500).send(reason))
 })
 
-httpServer.listen(PORT);
-console.log(`App listening on port: ${PORT}`)
+http.listen(PORT, () => {
+  console.log(`App listening on port: ${PORT}`)
+});
