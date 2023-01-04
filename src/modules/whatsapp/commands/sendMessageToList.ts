@@ -15,9 +15,6 @@ export const sendMessageToList = async (message: string, numbers: string[]) => {
   try {
 
     // Checking that message can be sent
-    if (client.info == undefined) {
-      throw "Client is not yet ready!"
-    }
     await checkNumbers(numbers);
 
   } catch (error) {

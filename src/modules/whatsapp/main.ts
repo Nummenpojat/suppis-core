@@ -16,13 +16,6 @@ export const isClientReady = () =>
       data: qr
     }
   }
-
-  if (client.info == undefined) {
-    throw {
-      type: "not-ready",
-      data: "Client wasn't ready and qr was empty. Try again shortly"
-    }
-  }
 }
 
 export const startWhatsappSession = async () => {

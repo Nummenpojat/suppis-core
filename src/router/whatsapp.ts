@@ -1,9 +1,17 @@
 import {Router} from "express";
 import {sendMessage} from "../modules/whatsapp/commands/sendMessage";
 import {sendMessageToList} from "../modules/whatsapp/commands/sendMessageToList";
-import {isClientReady} from "../modules/whatsapp/main";
+import {client, isClientReady} from "../modules/whatsapp/main";
 
 export const router = Router()
+
+router.use((req, res, next) => {
+  if (client.info == undefined) {
+    res.status(409).send("Whatsapp client is not ready!")
+    return
+  }
+  next()
+})
 
 router.all("/status", (req, res) => {
   try {

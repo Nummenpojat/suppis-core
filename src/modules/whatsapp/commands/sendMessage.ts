@@ -28,9 +28,6 @@ export const sendMessage = async (phoneNumber: string, message: string) => {
 
   try {
 
-    if (client.info == undefined) {
-      throw "Client is not yet ready!"
-    }
     await checkNumbers([phoneNumber])
 
     // Sending message to chosen chat
