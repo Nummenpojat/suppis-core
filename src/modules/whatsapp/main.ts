@@ -9,16 +9,18 @@ export const client = new Client({
 export let qr = ""
 
 export const isClientReady = () => {
-
   if (qr != "") {
     throw {
       type: "qr",
-      qr: qr
+      data: qr
     }
   }
 
   if (client.info == undefined) {
-    throw "Client wasn't ready and qr was empty. Try again shortly"
+    throw {
+      type: "not-ready",
+      data: "Client wasn't ready and qr was empty. Try again shortly"
+    }
   }
 }
 

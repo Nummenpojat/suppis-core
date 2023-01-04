@@ -24,8 +24,8 @@ const http = express()
 
 http.use(cors())
 http.use(json())
-http.use(appCheck)
-http.use(checkAuth)
+//http.use(appCheck)
+//http.use(checkAuth)
 http.use("/whatsapp", whatsappRouter)
 
 startWhatsappSession()
