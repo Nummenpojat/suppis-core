@@ -43,8 +43,8 @@ Check Firebase docs how to get [IdToken](https://firebase.google.com/docs/auth/a
     - On status code 409 responses with object like 👇
     ``` json
     {
-        "type": "qr" or "not-ready",
-        "data": "<qr code as text>" or "<message>"
+        "type": "qr"
+        "data": "<qr code as text>"
     }
     ```
 - Send message to one person on `/whatsapp/send/one`
