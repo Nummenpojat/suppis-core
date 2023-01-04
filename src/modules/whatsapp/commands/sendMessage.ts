@@ -1,4 +1,4 @@
-import {client, isClientReady} from "../main";
+import {checkNumbers, client} from "../main";
 
 /**
  *  Send message with Whatsapp to single number
@@ -28,7 +28,10 @@ export const sendMessage = async (phoneNumber: string, message: string) => {
 
   try {
 
-    isClientReady()
+    if (client.info == undefined) {
+      throw "Client is not yet ready!"
+    }
+    await checkNumbers([phoneNumber])
 
     // Sending message to chosen chat
     const returnMessage = await client.sendMessage(chatId, message)

@@ -1,4 +1,4 @@
-import {checkNumbers, client, isClientReady} from "../main";
+import {checkNumbers, client} from "../main";
 
 /**
  * Send same message to list of people
@@ -15,7 +15,9 @@ export const sendMessageToList = async (message: string, numbers: string[]) => {
   try {
 
     // Checking that message can be sent
-    isClientReady()
+    if (client.info == undefined) {
+      throw "Client is not yet ready!"
+    }
     await checkNumbers(numbers);
 
   } catch (error) {
@@ -34,11 +36,8 @@ export const sendMessageToList = async (message: string, numbers: string[]) => {
     }
 
     try {
-
       // Sending message to chosen chat
       await client.sendMessage(chatId, message);
-      console.log(`Message ${message} sent to ${num}`);
-
     } catch (error: any) {
       if (error.message != undefined) {
         throw error.message
@@ -46,4 +45,6 @@ export const sendMessageToList = async (message: string, numbers: string[]) => {
       throw error
     }
   }
+  console.log(`Message ${message} sent to list of people`);
+  return `Message ${message} sent to list of people`
 }

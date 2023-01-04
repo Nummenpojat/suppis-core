@@ -8,7 +8,8 @@ export const client = new Client({
 
 export let qr = ""
 
-export const isClientReady = () => {
+export const isClientReady = () =>
+{
   if (qr != "") {
     throw {
       type: "qr",
@@ -56,14 +57,11 @@ export const checkNumbers = async (numbers: string[]) => {
     try {
       const isRegistered = await client.isRegisteredUser(chatId)
       if (!isRegistered) {
-        throw `Number ${num} is invalid`
+        throw new Error()
       }
       console.log(`${num} is valid`)
     } catch (error: any) {
-      if (error.message != undefined) {
-        throw error.message
-      }
-      throw error
+      throw `Number ${num} is invalid`
     }
   }
 }

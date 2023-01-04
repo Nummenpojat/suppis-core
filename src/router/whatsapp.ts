@@ -20,16 +20,16 @@ router.post("/send/one", (req, res) => {
       res.status(200).send(result)
     })
     .catch((reason) => {
-      res.status(500).send(reason)
+      res.status(400).send(reason)
     })
 })
 
 router.post("/send/list", (req, res) => {
   sendMessageToList(req.body.message, req.body.numbers)
-    .then(() => {
-      res.status(200).send("Messages sent")
+    .then((result) => {
+      res.status(200).send(result)
     })
     .catch((reason) => {
-      res.status(500).send(reason)
+      res.status(400).send(reason)
     })
 })
