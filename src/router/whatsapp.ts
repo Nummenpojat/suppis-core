@@ -1,9 +1,26 @@
 import {Router} from "express";
 import {sendMessage} from "../modules/whatsapp/commands/sendMessage";
-import {qr} from "../modules/whatsapp/main";
 import {sendMessageToList} from "../modules/whatsapp/commands/sendMessageToList";
+import {client, isClientReady} from "../modules/whatsapp/main";
 
 export const router = Router()
+
+router.use((req, res, next) => {
+  if (client.info == undefined) {
+    res.status(409).send("Whatsapp client is not ready!")
+    return
+  }
+  next()
+})
+
+router.all("/status", (req, res) => {
+  try {
+    isClientReady()
+    res.status(200).send("Whatsapp client is ready!")
+  } catch (error) {
+    res.status(409).send(error)
+  }
+})
 
 router.post("/send/one", (req, res) => {
   sendMessage(req.body.number, req.body.message)
@@ -11,24 +28,16 @@ router.post("/send/one", (req, res) => {
       res.status(200).send(result)
     })
     .catch((reason) => {
-      if (reason.type == "qr") {
-        res.status(409).send(qr)
-      } else {
-        res.status(500).send(reason)
-      }
+      res.status(400).send(reason)
     })
 })
 
 router.post("/send/list", (req, res) => {
   sendMessageToList(req.body.message, req.body.numbers)
-    .then(() => {
-      res.status(200).send("Messages sent")
+    .then((result) => {
+      res.status(200).send(result)
     })
     .catch((reason) => {
-      if (reason.type == "qr") {
-        res.status(409).send(qr)
-      } else {
-        res.status(500).send(reason)
-      }
+      res.status(400).send(reason)
     })
 })

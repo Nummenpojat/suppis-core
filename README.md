@@ -36,14 +36,22 @@ Check Firebase docs how to get [IdToken](https://firebase.google.com/docs/auth/a
 - Make user admin on `/admin`
     - Put request
     - Takes email in body
-    - Responses with string on the body
+    - Responses with string on the body containing message
+- Check status of Whatsapp client on `/whatsapp/status`
+  - Any request type 
+  - Responses with string on the body containing message
+    - On status code 409 responses with object like 👇
+    ``` json
+    {
+        "type": "qr"
+        "data": "<qr code as text>"
+    }
+    ```
 - Send message to one person on `/whatsapp/send/one`
     - Post request
     - Takes a message and a number in body
-    - Responses with string on the body
-        - On status code 409 responses with string on the body containing qr
+    - Responses with string on the body containing message
 - Send message to list of people on `/whatsapp/send/list`
     - Post request
     - Takes a message and list of numbers in body
-    - Responses with string on the body
-        - On status code 409 responses with string on the body containing qr
+    - Responses with string on the body containing message
