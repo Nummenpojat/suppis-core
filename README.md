@@ -33,10 +33,14 @@ Every request must contain these headers like this 👇
 Check Firebase docs how to get [IdToken](https://firebase.google.com/docs/auth/admin/verify-id-tokens#web) and [AppCheckToken](https://firebase.google.com/docs/app-check/web/custom-resource)
 
 ### Routes
-- Make user admin on `/admin`
+- Make user admin on `/admin/set`
     - Put request
     - Takes email in body
     - Responses with string on the body containing message
+- Remove admin from user on `/admin/remove`
+  - Delete request
+  - Takes email in body
+  - Responses with string containing message
 - Check status of Whatsapp client on `/whatsapp/status`
   - Any request type 
   - Responses with string on the body containing message

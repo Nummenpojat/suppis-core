@@ -7,6 +7,7 @@ import {router as whatsappRouter} from "./router/whatsapp"
 import {checkAuth} from "./auth/core";
 import {setUserToAdmin} from "./auth/setUserToAdmin";
 import {appCheck} from "./auth/appCheck";
+import {removeAdminFromUser} from "./auth/removeAdminFromUser";
 const cors = require("cors")
 const {config} = require("dotenv")
 config()
@@ -37,10 +38,16 @@ http.all('/', (req: any, res: any) => {
   res.send("This is Suppis!")
 })
 
-http.put('/admin', (req, res) => {
+http.put('/admin/set', (req, res) => {
   setUserToAdmin(req.body.email)
     .then(() => res.status(201).send(`${req.body.email} is now admin`))
-    .catch((reason) => res.status(500).send(reason))
+    .catch((reason) => res.status(400).send(reason))
+})
+
+http.delete('/admin/remove', (req, res) => {
+  removeAdminFromUser(req.body.email)
+    .then(() => res.status(200).send(`Admin status removed from ${req.body.email}`))
+    .catch((reason) => res.status(400).send(reason))
 })
 
 http.listen(PORT, () => {
