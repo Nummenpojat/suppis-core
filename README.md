@@ -4,7 +4,8 @@ Innovative way to market 📣 and communicate 💬
 ## How to install 💾
 1. Clone project to your computer with : `git clone https://github.com/Nummenpojat/suppis-core.git`
 2. Run `npm install` to install dependencies of [Suppis-core](https://github.com/Nummenpojat/suppis-core)
-3. Now you can run `npm run dev` or `npm run start` to start up the app
+3. Run `npm install -g ts-node` to run Suppis in development
+4. Now you can run `npm run dev` or `npm run start` to start up the app
     - If you want to build the app run `npm run build`
 
 ## How to configure [Firebase 🔥](https://firebase.google.com/)
@@ -20,6 +21,10 @@ Innovative way to market 📣 and communicate 💬
 PORT= # Port number
 FIREBASE_SECRET_KEY_PATH= # File path to Firebase service key. Example: "/config/firebase-admin-secrets/secret-key.json"
 ````
+
+## Technologies
+Suppis uses as it's main component [Whatsapp-Web.js](https://wwebjs.dev/) library, which is used to send messages and [Firebase](https://firebase.google.com/) for authentication and API security
+Also some other technologies that Suppis uses are [Express](https://expressjs.com/) for API, [Typescript](https://www.typescriptlang.org/) for better developer experience and [React](https://reactjs.org/) on the frontend for the admin panel
 
 ## API 🔗
 Every request must contain these headers like this 👇
