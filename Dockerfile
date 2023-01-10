@@ -17,7 +17,7 @@ RUN \
 COPY . ./
 
 # Port number
-ENV PORT=
+ENV PORT=8080
 # File path to Firebase service key. Example: "/config/firebase-admin-secrets/secret-key.json"
 ENV FIREBASE_SECRET_KEY_PATH=
 
