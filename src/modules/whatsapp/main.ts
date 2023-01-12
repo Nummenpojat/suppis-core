@@ -3,7 +3,10 @@ import {Client, LocalAuth} from "whatsapp-web.js";
 // Client configuration and exporting to other module parts
 export const client = new Client({
   authStrategy: new LocalAuth({dataPath: "./config/whatsapp"}),
-  takeoverOnConflict: true
+  takeoverOnConflict: true,
+  puppeteer: {
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  }
 });
 
 export let qr = ""

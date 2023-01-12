@@ -22,6 +22,20 @@ PORT= # Port number
 FIREBASE_SECRET_KEY_PATH= # File path to Firebase service key. Example: "/config/firebase-admin-secrets/secret-key.json"
 ````
 
+## Running in Docker
+1. Install [Docker](https://www.docker.com/)
+2. Configure env variables in dockerfile
+  ```dockerfile
+  # Port number
+  ENV PORT= 
+  # File path to Firebase service key. Example: "/config/firebase-admin-secrets/secret-key.json"
+  ENV FIREBASE_SECRET_KEY_PATH= 
+  
+  EXPOSE Port here also
+  ```
+3. Run `docker build .`
+4. Start Docker image from console or Docker desktop app
+
 ## Technologies
 Suppis uses as it's main component [Whatsapp-Web.js](https://wwebjs.dev/) library, which is used to send messages and [Firebase](https://firebase.google.com/) for authentication and API security
 Also some other technologies that Suppis uses are [Express](https://expressjs.com/) for API, [Typescript](https://www.typescriptlang.org/) for better developer experience and [React](https://reactjs.org/) on the frontend for the admin panel
