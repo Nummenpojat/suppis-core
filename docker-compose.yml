@@ -1,15 +1,15 @@
-version: "3"
 services:
   core:
     build: .
     ports:
-      - "8080:8080"
+      - "3001:3001"
     restart: always
     environment:
-      PORT: 8080
-      FIREBASE_SECRET_KEY_PATH:
+      PORT: 3001
+      FIREBASE_SECRET_KEY_PATH: /app/config/firebase-admin-secrets/suppis-firebase-admin-secrets.json
+      WHATSAPP_SESSION_PATH: /app/config/whatsapp
     volumes:
-      - suppis:/var/app/config/whatsapp
-
-volumes:
-  suppis:
+      - ./config/whatsapp:/app/config/whatsapp
+      - ./config/firebase-admin-secrets:/app/config/firebase-admin-secrets
+    dns:
+      - 8.8.8.8

@@ -13,7 +13,7 @@ const {config} = require("dotenv")
 config()
 
 // Constant that holds Firebase admin sdk service account
-const ServiceAccount = require(`..${process.env.FIREBASE_SECRET_KEY_PATH}`);
+const ServiceAccount = require(`${process.env.FIREBASE_SECRET_KEY_PATH}`);
 
 // Even thought "firebase" shows as unused, it's used as the default app automatically
 const firebase = initializeApp({

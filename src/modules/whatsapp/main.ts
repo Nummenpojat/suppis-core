@@ -2,7 +2,7 @@ import {Client, LocalAuth} from "whatsapp-web.js";
 
 // Client configuration and exporting to other module parts
 export const client = new Client({
-  authStrategy: new LocalAuth({dataPath: "./config/whatsapp"}),
+  authStrategy: new LocalAuth({ dataPath: `${process.env.WHATSAPP_SESSION_PATH}` }),
   takeoverOnConflict: true,
   puppeteer: {
     args: ['--no-sandbox', '--disable-setuid-sandbox']
@@ -11,8 +11,7 @@ export const client = new Client({
 
 export let qr = ""
 
-export const isClientReady = () =>
-{
+export const isClientReady = () => {
   if (qr != "") {
     throw {
       type: "qr",
