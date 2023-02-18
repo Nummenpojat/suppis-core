@@ -5,14 +5,6 @@ import {client, isClientReady} from "../modules/whatsapp/main";
 
 export const router = Router()
 
-router.use((req, res, next) => {
-  if (client.info == undefined) {
-    res.status(409).send("Whatsapp client is not ready!")
-    return
-  }
-  next()
-})
-
 router.all("/status", (req, res) => {
   try {
     isClientReady()
@@ -20,6 +12,14 @@ router.all("/status", (req, res) => {
   } catch (error) {
     res.status(409).send(error)
   }
+})
+
+router.use((req, res, next) => {
+  if (client.info == undefined) {
+    res.status(409).send("Whatsapp client is not ready!")
+    return
+  }
+  next()
 })
 
 router.post("/send/one", (req, res) => {

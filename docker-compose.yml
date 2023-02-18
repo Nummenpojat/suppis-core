@@ -1,0 +1,15 @@
+version: "3"
+services:
+  core:
+    build: .
+    ports:
+      - "8080:8080"
+    restart: always
+    environment:
+      PORT: 8080
+      FIREBASE_SECRET_KEY_PATH:
+    volumes:
+      - suppis:/var/app/config/whatsapp
+
+volumes:
+  suppis:
