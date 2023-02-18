@@ -24,17 +24,8 @@ FIREBASE_SECRET_KEY_PATH= # File path to Firebase service key. Example: "/config
 
 ## Running in Docker
 1. Install [Docker](https://www.docker.com/)
-2. Configure env variables in dockerfile
-  ```dockerfile
-  # Port number
-  ENV PORT= 
-  # File path to Firebase service key. Example: "/config/firebase-admin-secrets/secret-key.json"
-  ENV FIREBASE_SECRET_KEY_PATH= 
-  
-  EXPOSE Port here also
-  ```
-3. Run `docker build .`
-4. Start Docker image from console or Docker desktop app
+2. Configure env variables in `Dockerfile` and `docker-compose.yml`
+3. Run `docker compose up` ([If something does not work, be sure to consult docs](https://docs.docker.com/compose/))
 
 ## Technologies
 Suppis uses as it's main component [Whatsapp-Web.js](https://wwebjs.dev/) library, which is used to send messages and [Firebase](https://firebase.google.com/) for authentication and API security
@@ -55,10 +46,12 @@ Check Firebase docs how to get [IdToken](https://firebase.google.com/docs/auth/a
 - Make user admin on `/admin/set`
     - Put request
     - Takes email in body
+      - `"email": <email>`
     - Responses with string on the body containing message
 - Remove admin from user on `/admin/remove`
   - Delete request
   - Takes email in body
+    - `"email": <email>`
   - Responses with string containing message
 - Check status of Whatsapp client on `/whatsapp/status`
   - Any request type 
