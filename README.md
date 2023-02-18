@@ -1,26 +1,27 @@
 # Suppis-core
 Innovative way to market 📣 and communicate 💬
 
-## How to install 💾
+## How to install and use 💾
 1. Clone project to your computer with : `git clone https://github.com/Nummenpojat/suppis-core.git`
 2. Run `npm install` to install dependencies of [Suppis-core](https://github.com/Nummenpojat/suppis-core)
-3. Run `npm install -g ts-node` to run Suppis in development
-4. Now you can run `npm run dev` or `npm run start` to start up the app
-    - If you want to build the app run `npm run build`
+3. Configure [Firebase 🔥](https://firebase.google.com/) 
+   1. Make Firebase project
+   2. Go to Authentication and enable Google as sign-in provider
+   3. Enable AppCheck. Check [docs](https://firebase.google.com/docs/app-check/web/recaptcha-provider) for the information how to do it
+      - Note that some steps on the documentation referenced above apply to frontend
+   4. Go to project settings >> Service accounts >> Firebase Admin sdk >> and download your private key
+   5. Copy the serviceAccountKey.json file to your project
+4. Make `.env` file to the root
+5. Configure all environment variables as in `.env.example` and below
+    ````dotenv
+    PORT= # Port number
+    FIREBASE_SECRET_KEY_PATH= # File path to Firebase service key. Example: "/config/firebase-admin-secrets/secret-key.json"
+    WHATSAPP_SESSION_PATH= # File path where whatsapp-web.js stores session
+    ````
 
-## How to configure [Firebase 🔥](https://firebase.google.com/)
-1. Make Firebase project
-2. Go to Authentication and enable Google as sign-in provider
-3. Enable AppCheck. Check [docs](https://firebase.google.com/docs/app-check/web/recaptcha-provider) for the information how to do it
-   - Note that some steps on the documentation referenced above apply to frontend
-4. Go to project settings >> Service accounts >> Firebase Admin sdk >> and download your private key
-5. Copy the serviceAccountKey.json file to your project
-6. Make `.env` file to the root 
-7. Configure all environment variables as in `.env.example` and below
-````dotenv
-PORT= # Port number
-FIREBASE_SECRET_KEY_PATH= # File path to Firebase service key. Example: "/config/firebase-admin-secrets/secret-key.json"
-````
+6. Run `npm install -g ts-node` to run Suppis in development
+7. Now you can run `npm run dev` or `npm run start` to start up the app
+    - If you want to build the app run `npm run build`
 
 ## Running in Docker
 1. Install [Docker](https://www.docker.com/)
