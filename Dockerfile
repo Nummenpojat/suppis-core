@@ -16,15 +16,6 @@ RUN \
 
 COPY . ./
 
-# Port number
-ENV PORT=Configure this
-# File path to Firebase service key. Example: "/config/firebase-admin-secrets/secret-key.json"
-ENV FIREBASE_SECRET_KEY_PATH=Configure this
-
-ENV WHATSAPP_SESSION_PATH=Configure this
-
-EXPOSE Configure this
-
 RUN npm run build
 
 CMD [ "npm", "run", "start-build" ]

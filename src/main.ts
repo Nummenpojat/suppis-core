@@ -27,24 +27,24 @@ http.use(cors())
 http.use(json())
 http.use(appCheck)
 http.use(checkAuth)
-http.use("/whatsapp", whatsappRouter)
+http.use("/api/whatsapp", whatsappRouter)
 
 startWhatsappSession()
   .catch((reason) => {
     console.log(reason)
   })
 
-http.all('/', (req: any, res: any) => {
+http.all('/api', (req: any, res: any) => {
   res.send("This is Suppis!")
 })
 
-http.put('/admin/set', (req, res) => {
+http.put('/api/admin/set', (req, res) => {
   setUserToAdmin(req.body.email)
     .then(() => res.status(201).send(`${req.body.email} is now admin`))
     .catch((reason) => res.status(400).send(reason))
 })
 
-http.delete('/admin/remove', (req, res) => {
+http.delete('/api/admin/remove', (req, res) => {
   removeAdminFromUser(req.body.email)
     .then(() => res.status(200).send(`Admin status removed from ${req.body.email}`))
     .catch((reason) => res.status(400).send(reason))
